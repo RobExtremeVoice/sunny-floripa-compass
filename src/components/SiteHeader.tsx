@@ -8,7 +8,7 @@ const navItems = [
   { label: "Praias", href: "/praias" },
   { label: "Gastronomia", href: "/gastronomia" },
   { label: "Entretenimento", href: "/entretenimento" },
-  { label: "Blog", href: "#blog" },
+  { label: "Blog", href: "/blog" },
   { label: "Planeje sua Viagem", href: "#planejar", highlight: true },
 ];
 
