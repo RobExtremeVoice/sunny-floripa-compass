@@ -3,7 +3,7 @@ import { Menu, X, Plane, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navItems = [
-  { label: "Voos", href: "#voos", icon: Plane },
+  { label: "Voos", href: "/flights", icon: Plane },
   { label: "Hospedagem", href: "#hospedagem" },
   { label: "Praias", href: "#praias" },
   { label: "Gastronomia", href: "#gastronomia" },
