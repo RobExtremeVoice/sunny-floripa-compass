@@ -14,7 +14,89 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      airlines: {
+        Row: {
+          code: string
+          created_at: string
+          id: string
+          logo_url: string | null
+          name: string
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          id?: string
+          logo_url?: string | null
+          name: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          id?: string
+          logo_url?: string | null
+          name?: string
+        }
+        Relationships: []
+      }
+      flights: {
+        Row: {
+          actual_time: string | null
+          airline_code: string
+          created_at: string
+          destination: string
+          estimated_time: string | null
+          flight_number: string
+          gate: string | null
+          id: string
+          is_arrival: boolean
+          origin: string
+          scheduled_time: string
+          status: Database["public"]["Enums"]["flight_status"]
+          terminal: string | null
+          updated_at: string
+        }
+        Insert: {
+          actual_time?: string | null
+          airline_code: string
+          created_at?: string
+          destination: string
+          estimated_time?: string | null
+          flight_number: string
+          gate?: string | null
+          id?: string
+          is_arrival?: boolean
+          origin: string
+          scheduled_time: string
+          status?: Database["public"]["Enums"]["flight_status"]
+          terminal?: string | null
+          updated_at?: string
+        }
+        Update: {
+          actual_time?: string | null
+          airline_code?: string
+          created_at?: string
+          destination?: string
+          estimated_time?: string | null
+          flight_number?: string
+          gate?: string | null
+          id?: string
+          is_arrival?: boolean
+          origin?: string
+          scheduled_time?: string
+          status?: Database["public"]["Enums"]["flight_status"]
+          terminal?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "flights_airline_code_fkey"
+            columns: ["airline_code"]
+            isOneToOne: false
+            referencedRelation: "airlines"
+            referencedColumns: ["code"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +105,15 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      flight_status:
+        | "scheduled"
+        | "boarding"
+        | "departed"
+        | "in_air"
+        | "landed"
+        | "arrived"
+        | "delayed"
+        | "cancelled"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +240,17 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      flight_status: [
+        "scheduled",
+        "boarding",
+        "departed",
+        "in_air",
+        "landed",
+        "arrived",
+        "delayed",
+        "cancelled",
+      ],
+    },
   },
 } as const
