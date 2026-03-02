@@ -94,10 +94,17 @@ const RestaurantDetail = () => {
       <SiteHeader />
 
       {/* Hero */}
-      <section className="relative pt-20 pb-12 md:pt-28 md:pb-16 bg-gradient-sunset text-primary-foreground overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-10 right-10 w-64 h-64 rounded-full bg-primary-foreground/20 blur-3xl" />
-        </div>
+      <section className="relative h-[50vh] md:h-[55vh] overflow-hidden">
+        {restaurant.photo_url ? (
+          <img
+            src={restaurant.photo_url}
+            alt={restaurant.name}
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <div className="w-full h-full bg-gradient-sunset" />
+        )}
+        <div className="absolute inset-0 bg-hero-overlay" />
         <div className="container mx-auto px-4 relative z-10">
           <Link
             to="/gastronomia"
