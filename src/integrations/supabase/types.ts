@@ -116,6 +116,44 @@ export type Database = {
         }
         Relationships: []
       }
+      beach_reviews: {
+        Row: {
+          author_name: string
+          beach_id: string
+          comment: string | null
+          created_at: string
+          id: string
+          rating: number
+          visit_date: string | null
+        }
+        Insert: {
+          author_name?: string
+          beach_id: string
+          comment?: string | null
+          created_at?: string
+          id?: string
+          rating: number
+          visit_date?: string | null
+        }
+        Update: {
+          author_name?: string
+          beach_id?: string
+          comment?: string | null
+          created_at?: string
+          id?: string
+          rating?: number
+          visit_date?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "beach_reviews_beach_id_fkey"
+            columns: ["beach_id"]
+            isOneToOne: false
+            referencedRelation: "beaches"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       beaches: {
         Row: {
           average_water_temp: number | null
