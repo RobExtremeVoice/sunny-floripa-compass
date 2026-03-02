@@ -26,14 +26,14 @@ const Accommodations = () => {
   const { data, isLoading, refetch } = useQuery({
     queryKey: ["accommodations", checkin, checkout, adults, rooms],
     queryFn: async () => {
-      const { data, error } = await supabase.functions.invoke("search-accommodations", {
-        body: null,
-        headers: {},
-      });
-      // Use query params via GET - invoke doesn't support query params well,
-      // so we'll call directly
       const url = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/search-accommodations?checkin=${checkin}&checkout=${checkout}&adults=${adults}&rooms=${rooms}`;
       const res = await fetch(url, {
+        headers: {
+          apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+        },
+      });
+      if (!res.ok) throw new Error("Erro ao buscar hospedagens");
+      return res.json();
         headers: {
           apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
         },
