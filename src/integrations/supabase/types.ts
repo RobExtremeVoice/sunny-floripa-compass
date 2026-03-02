@@ -116,6 +116,72 @@ export type Database = {
         }
         Relationships: []
       }
+      beaches: {
+        Row: {
+          average_water_temp: number | null
+          best_season: string | null
+          characteristics: string[] | null
+          created_at: string
+          description: string | null
+          difficulty_access: string | null
+          id: string
+          infrastructure: string[] | null
+          latitude: number | null
+          length_meters: number | null
+          longitude: number | null
+          name: string
+          photo_url: string | null
+          photos: string[] | null
+          region: string
+          sand_type: string | null
+          slug: string
+          updated_at: string
+          wave_intensity: string | null
+        }
+        Insert: {
+          average_water_temp?: number | null
+          best_season?: string | null
+          characteristics?: string[] | null
+          created_at?: string
+          description?: string | null
+          difficulty_access?: string | null
+          id?: string
+          infrastructure?: string[] | null
+          latitude?: number | null
+          length_meters?: number | null
+          longitude?: number | null
+          name: string
+          photo_url?: string | null
+          photos?: string[] | null
+          region: string
+          sand_type?: string | null
+          slug: string
+          updated_at?: string
+          wave_intensity?: string | null
+        }
+        Update: {
+          average_water_temp?: number | null
+          best_season?: string | null
+          characteristics?: string[] | null
+          created_at?: string
+          description?: string | null
+          difficulty_access?: string | null
+          id?: string
+          infrastructure?: string[] | null
+          latitude?: number | null
+          length_meters?: number | null
+          longitude?: number | null
+          name?: string
+          photo_url?: string | null
+          photos?: string[] | null
+          region?: string
+          sand_type?: string | null
+          slug?: string
+          updated_at?: string
+          wave_intensity?: string | null
+        }
+        Relationships: []
+      }
       flights: {
         Row: {
           actual_time: string | null
