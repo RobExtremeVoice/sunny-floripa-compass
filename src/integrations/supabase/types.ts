@@ -455,6 +455,33 @@ export type Database = {
           },
         ]
       }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          display_name: string | null
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       restaurant_reviews: {
         Row: {
           author_name: string
@@ -565,6 +592,86 @@ export type Database = {
           specialties?: string[] | null
           updated_at?: string
           website?: string | null
+        }
+        Relationships: []
+      }
+      trip_items: {
+        Row: {
+          created_at: string
+          day_number: number | null
+          id: string
+          item_id: string
+          item_type: string
+          notes: string | null
+          sort_order: number | null
+          time_slot: string | null
+          trip_id: string
+        }
+        Insert: {
+          created_at?: string
+          day_number?: number | null
+          id?: string
+          item_id: string
+          item_type: string
+          notes?: string | null
+          sort_order?: number | null
+          time_slot?: string | null
+          trip_id: string
+        }
+        Update: {
+          created_at?: string
+          day_number?: number | null
+          id?: string
+          item_id?: string
+          item_type?: string
+          notes?: string | null
+          sort_order?: number | null
+          time_slot?: string | null
+          trip_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "trip_items_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: false
+            referencedRelation: "trips"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      trips: {
+        Row: {
+          created_at: string
+          end_date: string | null
+          id: string
+          name: string
+          notes: string | null
+          num_travelers: number | null
+          start_date: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          end_date?: string | null
+          id?: string
+          name?: string
+          notes?: string | null
+          num_travelers?: number | null
+          start_date?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          end_date?: string | null
+          id?: string
+          name?: string
+          notes?: string | null
+          num_travelers?: number | null
+          start_date?: string | null
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
