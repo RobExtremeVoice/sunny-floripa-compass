@@ -1,13 +1,14 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import FlightTable from "@/components/flights/FlightTable";
 import FlightSearch from "@/components/flights/FlightSearch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { PlaneLanding, PlaneTakeoff, Search, RefreshCw } from "lucide-react";
+import { PlaneLanding, PlaneTakeoff, Search, RefreshCw, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
+import { toast } from "sonner";
 import type { Tables } from "@/integrations/supabase/types";
 
 type Flight = Tables<"flights">;
@@ -15,6 +16,22 @@ type Flight = Tables<"flights">;
 const Flights = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState("arrivals");
+  const queryClient = useQueryClient();
+
+  const syncMutation = useMutation({
+    mutationFn: async () => {
+      const { data, error } = await supabase.functions.invoke("sync-flights");
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["flights"] });
+      toast.success(`Voos atualizados! ${data.total_inserted} voos carregados.`);
+    },
+    onError: (error) => {
+      toast.error(`Erro ao sincronizar: ${error.message}`);
+    },
+  });
 
   const { data: flights, isLoading, refetch } = useQuery({
     queryKey: ["flights"],
@@ -82,13 +99,27 @@ const Flights = () => {
             {/* Toolbar */}
             <div className="p-4 md:p-6 border-b border-border flex flex-col md:flex-row md:items-center gap-4">
               <FlightSearch value={searchQuery} onChange={setSearchQuery} />
-              <button
-                onClick={() => refetch()}
-                className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors ml-auto shrink-0"
-              >
-                <RefreshCw className="w-4 h-4" />
-                Atualizar
-              </button>
+              <div className="flex items-center gap-3 ml-auto shrink-0">
+                <button
+                  onClick={() => syncMutation.mutate()}
+                  disabled={syncMutation.isPending}
+                  className="flex items-center gap-2 text-sm bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50"
+                >
+                  {syncMutation.isPending ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <RefreshCw className="w-4 h-4" />
+                  )}
+                  Sincronizar API
+                </button>
+                <button
+                  onClick={() => refetch()}
+                  className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+                >
+                  <RefreshCw className="w-4 h-4" />
+                  Atualizar
+                </button>
+              </div>
             </div>
 
             {/* Tabs */}
