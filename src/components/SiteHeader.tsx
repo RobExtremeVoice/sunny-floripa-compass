@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 const navItems = [
   { label: "Voos", href: "/flights", icon: Plane },
   { label: "Hospedagem", href: "/hospedagem" },
-  { label: "Praias", href: "#praias" },
+  { label: "Praias", href: "/praias" },
   { label: "Gastronomia", href: "#gastronomia" },
   { label: "Blog", href: "#blog" },
   { label: "Planeje sua Viagem", href: "#planejar", highlight: true },
