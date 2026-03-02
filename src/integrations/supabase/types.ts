@@ -279,6 +279,119 @@ export type Database = {
           },
         ]
       }
+      restaurant_reviews: {
+        Row: {
+          author_name: string
+          comment: string | null
+          created_at: string
+          id: string
+          rating: number
+          restaurant_id: string
+          visit_date: string | null
+        }
+        Insert: {
+          author_name?: string
+          comment?: string | null
+          created_at?: string
+          id?: string
+          rating: number
+          restaurant_id: string
+          visit_date?: string | null
+        }
+        Update: {
+          author_name?: string
+          comment?: string | null
+          created_at?: string
+          id?: string
+          rating?: number
+          restaurant_id?: string
+          visit_date?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "restaurant_reviews_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      restaurants: {
+        Row: {
+          address: string | null
+          category: Database["public"]["Enums"]["restaurant_category"]
+          created_at: string
+          description: string | null
+          has_delivery: boolean | null
+          has_reservation: boolean | null
+          id: string
+          instagram: string | null
+          latitude: number | null
+          longitude: number | null
+          name: string
+          neighborhood: string | null
+          opening_hours: string | null
+          phone: string | null
+          photo_url: string | null
+          photos: string[] | null
+          price_range: number | null
+          region: string
+          slug: string
+          specialties: string[] | null
+          updated_at: string
+          website: string | null
+        }
+        Insert: {
+          address?: string | null
+          category: Database["public"]["Enums"]["restaurant_category"]
+          created_at?: string
+          description?: string | null
+          has_delivery?: boolean | null
+          has_reservation?: boolean | null
+          id?: string
+          instagram?: string | null
+          latitude?: number | null
+          longitude?: number | null
+          name: string
+          neighborhood?: string | null
+          opening_hours?: string | null
+          phone?: string | null
+          photo_url?: string | null
+          photos?: string[] | null
+          price_range?: number | null
+          region?: string
+          slug: string
+          specialties?: string[] | null
+          updated_at?: string
+          website?: string | null
+        }
+        Update: {
+          address?: string | null
+          category?: Database["public"]["Enums"]["restaurant_category"]
+          created_at?: string
+          description?: string | null
+          has_delivery?: boolean | null
+          has_reservation?: boolean | null
+          id?: string
+          instagram?: string | null
+          latitude?: number | null
+          longitude?: number | null
+          name?: string
+          neighborhood?: string | null
+          opening_hours?: string | null
+          phone?: string | null
+          photo_url?: string | null
+          photos?: string[] | null
+          price_range?: number | null
+          region?: string
+          slug?: string
+          specialties?: string[] | null
+          updated_at?: string
+          website?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -296,6 +409,11 @@ export type Database = {
         | "arrived"
         | "delayed"
         | "cancelled"
+      restaurant_category:
+        | "frutos_do_mar"
+        | "acoriana"
+        | "internacional"
+        | "cafes_doces"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -432,6 +550,12 @@ export const Constants = {
         "arrived",
         "delayed",
         "cancelled",
+      ],
+      restaurant_category: [
+        "frutos_do_mar",
+        "acoriana",
+        "internacional",
+        "cafes_doces",
       ],
     },
   },
