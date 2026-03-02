@@ -16,6 +16,26 @@ type Flight = Tables<"flights">;
 const Flights = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState("arrivals");
+  const queryClient = useQueryClient();
+
+  const syncMutation = useMutation({
+    mutationFn: async () => {
+      const { data, error } = await supabase.functions.invoke("sync-flights");
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["flights"] });
+      toast.success(`Voos atualizados! ${data.total_inserted} voos carregados da AviationStack.`);
+    },
+    onError: (error) => {
+      toast.error(`Erro ao sincronizar: ${error.message}`);
+    },
+  });
+
+const Flights = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [activeTab, setActiveTab] = useState("arrivals");
 
   const { data: flights, isLoading, refetch } = useQuery({
     queryKey: ["flights"],
