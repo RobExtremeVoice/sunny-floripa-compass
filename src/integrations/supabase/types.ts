@@ -14,6 +14,84 @@ export type Database = {
   }
   public: {
     Tables: {
+      accommodations: {
+        Row: {
+          address: string | null
+          amenities: string[] | null
+          booking_url: string | null
+          checkin_date: string | null
+          checkout_date: string | null
+          city: string | null
+          created_at: string
+          currency: string | null
+          data_source: string | null
+          description: string | null
+          external_id: string
+          hotel_type: string | null
+          id: string
+          latitude: number | null
+          longitude: number | null
+          name: string
+          photo_url: string | null
+          photos: string[] | null
+          price_per_night: number | null
+          review_count: number | null
+          review_score: number | null
+          star_rating: number | null
+          updated_at: string
+        }
+        Insert: {
+          address?: string | null
+          amenities?: string[] | null
+          booking_url?: string | null
+          checkin_date?: string | null
+          checkout_date?: string | null
+          city?: string | null
+          created_at?: string
+          currency?: string | null
+          data_source?: string | null
+          description?: string | null
+          external_id: string
+          hotel_type?: string | null
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          name: string
+          photo_url?: string | null
+          photos?: string[] | null
+          price_per_night?: number | null
+          review_count?: number | null
+          review_score?: number | null
+          star_rating?: number | null
+          updated_at?: string
+        }
+        Update: {
+          address?: string | null
+          amenities?: string[] | null
+          booking_url?: string | null
+          checkin_date?: string | null
+          checkout_date?: string | null
+          city?: string | null
+          created_at?: string
+          currency?: string | null
+          data_source?: string | null
+          description?: string | null
+          external_id?: string
+          hotel_type?: string | null
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          name?: string
+          photo_url?: string | null
+          photos?: string[] | null
+          price_per_night?: number | null
+          review_count?: number | null
+          review_score?: number | null
+          star_rating?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       airlines: {
         Row: {
           code: string
