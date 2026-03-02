@@ -133,6 +133,7 @@ const RestaurantDetail = () => {
               </p>
             )}
           </div>
+        </div>
       </section>
 
       {/* Content */}
