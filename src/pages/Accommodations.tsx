@@ -1,4 +1,5 @@
 import { useState } from "react";
+import SEO from "@/components/SEO";
 import { useQuery } from "@tanstack/react-query";
 
 import SiteHeader from "@/components/SiteHeader";
@@ -47,6 +48,11 @@ const Accommodations = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title="Hospedagem em Florianópolis"
+        description="Encontre os melhores hotéis, pousadas e resorts em Florianópolis. Compare preços, avaliações e reserve sua estadia na Ilha da Magia."
+        url="/hospedagem"
+      />
       <SiteHeader />
       <main className="pt-20">
         {/* Hero */}
