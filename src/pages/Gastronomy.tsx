@@ -1,4 +1,5 @@
 import { useState, useMemo, lazy, Suspense } from "react";
+import SEO from "@/components/SEO";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -115,6 +116,11 @@ const Gastronomy = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title="Gastronomia de Florianópolis – Restaurantes e Bares"
+        description="Descubra os melhores restaurantes de Florianópolis: frutos do mar, culinária açoriana, internacional e cafés. Avaliações e cardápios."
+        url="/gastronomia"
+      />
       <SiteHeader />
 
       {/* Hero */}

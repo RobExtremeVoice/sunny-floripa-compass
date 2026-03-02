@@ -1,4 +1,5 @@
 import { useState } from "react";
+import SEO from "@/components/SEO";
 import { useParams, Link } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -91,6 +92,12 @@ const RestaurantDetail = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title={`${restaurant.name} – Restaurante em Florianópolis`}
+        description={restaurant.description || `Conheça o ${restaurant.name} em Florianópolis: cardápio, avaliações e como chegar.`}
+        image={restaurant.photo_url || undefined}
+        url={`/gastronomia/${slug}`}
+      />
       <SiteHeader />
 
       {/* Hero */}
