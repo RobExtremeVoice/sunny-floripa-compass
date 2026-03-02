@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, lazy, Suspense } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import SiteHeader from "@/components/SiteHeader";
@@ -6,8 +6,10 @@ import SiteFooter from "@/components/SiteFooter";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Search, MapPin, Waves, Footprints, Ruler, Sun, ChevronDown, X } from "lucide-react";
+import { Search, MapPin, Waves, Footprints, Ruler, Sun, ChevronDown, X, Map, LayoutGrid } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+
+const BeachesMap = lazy(() => import("@/components/BeachesMap"));
 
 const REGIONS = ["Todas", "Norte", "Sul", "Leste", "Oeste"] as const;
 
@@ -65,6 +67,7 @@ const Beaches = () => {
   const [search, setSearch] = useState("");
   const [region, setRegion] = useState("Todas");
   const [selectedBeach, setSelectedBeach] = useState<Beach | null>(null);
+  const [viewMode, setViewMode] = useState<"grid" | "map">("grid");
 
   const { data: beaches, isLoading } = useQuery({
     queryKey: ["beaches"],
@@ -162,10 +165,36 @@ const Beaches = () => {
 
       {/* Results */}
       <section className="container mx-auto px-4 py-10">
-        <p className="text-muted-foreground text-sm mb-6">
-          {filtered.length} praia{filtered.length !== 1 ? "s" : ""} encontrada
-          {filtered.length !== 1 ? "s" : ""}
-        </p>
+        <div className="flex items-center justify-between mb-6">
+          <p className="text-muted-foreground text-sm">
+            {filtered.length} praia{filtered.length !== 1 ? "s" : ""} encontrada
+            {filtered.length !== 1 ? "s" : ""}
+          </p>
+          <div className="flex items-center gap-1 bg-muted rounded-lg p-1">
+            <button
+              onClick={() => setViewMode("grid")}
+              className={`p-2 rounded-md transition-all ${
+                viewMode === "grid"
+                  ? "bg-card shadow-sm text-primary"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+              aria-label="Visualização em grade"
+            >
+              <LayoutGrid className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => setViewMode("map")}
+              className={`p-2 rounded-md transition-all ${
+                viewMode === "map"
+                  ? "bg-card shadow-sm text-primary"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+              aria-label="Visualização no mapa"
+            >
+              <Map className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
 
         {isLoading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -173,6 +202,15 @@ const Beaches = () => {
               <Skeleton key={i} className="h-80 rounded-xl" />
             ))}
           </div>
+        ) : viewMode === "map" ? (
+          <Suspense fallback={<Skeleton className="h-[500px] rounded-xl" />}>
+            <div className="relative">
+              <BeachesMap
+                beaches={filtered}
+                onSelectBeach={(beach) => setSelectedBeach(beach)}
+              />
+            </div>
+          </Suspense>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <AnimatePresence mode="popLayout">
