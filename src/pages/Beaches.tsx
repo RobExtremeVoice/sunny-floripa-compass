@@ -1,4 +1,5 @@
 import { useState, useMemo, lazy, Suspense } from "react";
+import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import SiteHeader from "@/components/SiteHeader";
@@ -306,6 +307,13 @@ const BeachCard = ({ beach, onClick }: { beach: Beach; onClick: () => void }) =>
           </Badge>
         )}
       </div>
+      <Link
+        to={`/praias/${beach.slug}`}
+        className="text-xs text-primary hover:underline font-medium"
+        onClick={(e) => e.stopPropagation()}
+      >
+        Ver detalhes →
+      </Link>
     </div>
   </motion.div>
 );
