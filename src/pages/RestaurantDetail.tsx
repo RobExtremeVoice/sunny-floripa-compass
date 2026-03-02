@@ -105,33 +105,34 @@ const RestaurantDetail = () => {
           <div className="w-full h-full bg-gradient-sunset" />
         )}
         <div className="absolute inset-0 bg-hero-overlay" />
-        <div className="container mx-auto px-4 relative z-10">
-          <Link
-            to="/gastronomia"
-            className="inline-flex items-center gap-1 text-primary-foreground/80 hover:text-primary-foreground text-sm mb-4 transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" /> Voltar para gastronomia
-          </Link>
-          <div className="flex items-center gap-3 mb-2">
-            <Badge className="bg-primary-foreground/20 text-primary-foreground border-primary-foreground/30">
-              {CATEGORY_LABELS[restaurant.category] || restaurant.category}
-            </Badge>
-            {avgRating && (
-              <span className="flex items-center gap-1 text-primary-foreground/90 text-sm">
-                <Star className="w-4 h-4 fill-current text-yellow-300" />
-                {avgRating} ({reviews?.length} avaliação{reviews?.length !== 1 ? "ões" : ""})
-              </span>
+        <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10">
+          <div className="container mx-auto">
+            <Link
+              to="/gastronomia"
+              className="inline-flex items-center gap-1 text-primary-foreground/80 hover:text-primary-foreground text-sm mb-4 transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" /> Voltar para gastronomia
+            </Link>
+            <div className="flex items-center gap-3 mb-2">
+              <Badge className="bg-primary text-primary-foreground">
+                {CATEGORY_LABELS[restaurant.category] || restaurant.category}
+              </Badge>
+              {avgRating && (
+                <span className="flex items-center gap-1 text-primary-foreground/90 text-sm">
+                  <Star className="w-4 h-4 fill-current text-yellow-400" />
+                  {avgRating} ({reviews?.length} avaliação{reviews?.length !== 1 ? "ões" : ""})
+                </span>
+              )}
+            </div>
+            <h1 className="font-display text-4xl md:text-5xl font-bold text-primary-foreground drop-shadow-lg">
+              {restaurant.name}
+            </h1>
+            {restaurant.neighborhood && (
+              <p className="flex items-center gap-1.5 text-primary-foreground/70 mt-2">
+                <MapPin className="w-4 h-4" /> {restaurant.neighborhood}, {restaurant.region}
+              </p>
             )}
           </div>
-          <h1 className="font-display text-4xl md:text-5xl font-bold drop-shadow-lg">
-            {restaurant.name}
-          </h1>
-          {restaurant.neighborhood && (
-            <p className="flex items-center gap-1.5 text-primary-foreground/70 mt-2">
-              <MapPin className="w-4 h-4" /> {restaurant.neighborhood}, {restaurant.region}
-            </p>
-          )}
-        </div>
       </section>
 
       {/* Content */}
