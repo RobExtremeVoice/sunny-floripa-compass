@@ -2,3 +2,6 @@ project_id = "flxhimbmdhfpfsahjnrj"
 
 [functions.sync-flights]
 verify_jwt = false
+
+[functions.search-accommodations]
+verify_jwt = false
