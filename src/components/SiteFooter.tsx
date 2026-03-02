@@ -1,10 +1,30 @@
 import { Plane, Instagram, Facebook, Mail, Phone, MapPin } from "lucide-react";
 
 const footerLinks = {
-  "Visite Floripa": ["Sobre Nós", "Contato", "Trabalhe Conosco", "Anuncie"],
-  "Descubra": ["Praias", "Gastronomia", "Hospedagem", "Vida Noturna"],
-  "Serviços": ["Voos ao Vivo", "Planeje sua Viagem", "Transporte", "FAQ"],
-  "Legal": ["Privacidade", "Termos de Uso", "Cookies", "Disclaimers"],
+  "Descubra": [
+    { label: "Praias", href: "/praias" },
+    { label: "Gastronomia", href: "/gastronomia" },
+    { label: "Entretenimento", href: "/entretenimento" },
+    { label: "Hospedagem", href: "/hospedagem" },
+  ],
+  "Serviços": [
+    { label: "Voos ao Vivo", href: "/flights" },
+    { label: "Planeje sua Viagem", href: "/planejar" },
+    { label: "Blog", href: "/blog" },
+    { label: "FAQ", href: "#" },
+  ],
+  "Visite Floripa": [
+    { label: "Sobre Nós", href: "#" },
+    { label: "Contato", href: "#" },
+    { label: "Trabalhe Conosco", href: "#" },
+    { label: "Anuncie", href: "#" },
+  ],
+  "Legal": [
+    { label: "Privacidade", href: "#" },
+    { label: "Termos de Uso", href: "#" },
+    { label: "Cookies", href: "#" },
+    { label: "Disclaimers", href: "#" },
+  ],
 };
 
 const SiteFooter = () => {
@@ -42,9 +62,9 @@ const SiteFooter = () => {
               </h4>
               <ul className="space-y-2.5">
                 {links.map((link) => (
-                  <li key={link}>
-                    <a href="#" className="text-sm text-card/55 hover:text-card transition-colors font-body">
-                      {link}
+                  <li key={link.label}>
+                    <a href={link.href} className="text-sm text-card/55 hover:text-card transition-colors font-body">
+                      {link.label}
                     </a>
                   </li>
                 ))}
