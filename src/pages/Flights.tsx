@@ -1,4 +1,5 @@
 import { useState } from "react";
+import SEO from "@/components/SEO";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import SiteHeader from "@/components/SiteHeader";
@@ -71,6 +72,11 @@ const Flights = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title="Voos em Tempo Real – Aeroporto de Florianópolis (FLN)"
+        description="Acompanhe chegadas e partidas em tempo real no Aeroporto Internacional de Florianópolis. Status de voos, portões e horários atualizados."
+        url="/flights"
+      />
       <SiteHeader />
       <main className="pt-20">
         {/* Hero */}

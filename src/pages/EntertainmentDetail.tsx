@@ -1,4 +1,5 @@
 import { useState } from "react";
+import SEO from "@/components/SEO";
 import { useParams, Link } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -98,6 +99,12 @@ const EntertainmentDetail = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title={`${activity.name} – Entretenimento em Florianópolis`}
+        description={activity.description || `Descubra ${activity.name} em Florianópolis: informações, avaliações e como chegar.`}
+        image={activity.photo_url || undefined}
+        url={`/entretenimento/${slug}`}
+      />
       <SiteHeader />
 
       {/* Hero */}

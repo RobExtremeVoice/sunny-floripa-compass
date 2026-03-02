@@ -1,4 +1,5 @@
 import { useState } from "react";
+import SEO from "@/components/SEO";
 import { useParams, Link } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -99,6 +100,12 @@ const BeachDetail = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title={`${beach.name} – Praia em Florianópolis`}
+        description={beach.description || `Conheça a Praia ${beach.name} em Florianópolis: fotos, ondas, infraestrutura e avaliações de visitantes.`}
+        image={beach.photo_url || undefined}
+        url={`/praias/${slug}`}
+      />
       <SiteHeader />
 
       {/* Hero Image */}

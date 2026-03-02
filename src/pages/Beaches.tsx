@@ -1,4 +1,5 @@
 import { useState, useMemo, lazy, Suspense } from "react";
+import SEO from "@/components/SEO";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -106,6 +107,11 @@ const Beaches = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title="Praias de Florianópolis – Guia Completo"
+        description="Descubra as 42 praias de Florianópolis: fotos, ondas, infraestrutura, acesso e mapa interativo. Encontre a praia perfeita na Ilha da Magia."
+        url="/praias"
+      />
       <SiteHeader />
 
       {/* Hero */}
