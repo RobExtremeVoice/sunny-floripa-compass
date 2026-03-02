@@ -1,13 +1,14 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import FlightTable from "@/components/flights/FlightTable";
 import FlightSearch from "@/components/flights/FlightSearch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { PlaneLanding, PlaneTakeoff, Search, RefreshCw } from "lucide-react";
+import { PlaneLanding, PlaneTakeoff, Search, RefreshCw, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
+import { toast } from "sonner";
 import type { Tables } from "@/integrations/supabase/types";
 
 type Flight = Tables<"flights">;
