@@ -34,12 +34,6 @@ const Accommodations = () => {
       });
       if (!res.ok) throw new Error("Erro ao buscar hospedagens");
       return res.json();
-        headers: {
-          apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
-        },
-      });
-      if (!res.ok) throw new Error("Erro ao buscar hospedagens");
-      return res.json();
     },
     enabled: searchTriggered,
   });
