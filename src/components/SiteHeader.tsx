@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { Menu, X, Plane, ChevronDown } from "lucide-react";
+import { Menu, X, Plane, ChevronDown, User, LogOut } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useAuth } from "@/hooks/useAuth";
 
 const navItems = [
   { label: "Voos", href: "/flights", icon: Plane },
@@ -9,12 +10,13 @@ const navItems = [
   { label: "Gastronomia", href: "/gastronomia" },
   { label: "Entretenimento", href: "/entretenimento" },
   { label: "Blog", href: "/blog" },
-  { label: "Planeje sua Viagem", href: "#planejar", highlight: true },
+  { label: "Planeje sua Viagem", href: "/planejar", highlight: true },
 ];
 
 const SiteHeader = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { user, signOut } = useAuth();
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 40);
@@ -61,8 +63,45 @@ const SiteHeader = () => {
           ))}
         </nav>
 
-        {/* Language + Mobile Toggle */}
-        <div className="flex items-center gap-3">
+        {/* Auth + Language + Mobile Toggle */}
+        <div className="flex items-center gap-2">
+          {user ? (
+            <div className="hidden md:flex items-center gap-2">
+              <a
+                href="/planejar"
+                className={`flex items-center gap-1 text-sm font-medium transition-colors px-3 py-1.5 rounded-lg ${
+                  isScrolled
+                    ? "text-foreground/80 hover:text-primary hover:bg-muted"
+                    : "text-card/80 hover:text-card hover:bg-card/10"
+                }`}
+              >
+                <User className="w-4 h-4" />
+                Minha Conta
+              </a>
+              <button
+                onClick={signOut}
+                className={`flex items-center gap-1 text-sm transition-colors px-2 py-1.5 rounded-lg ${
+                  isScrolled
+                    ? "text-muted-foreground hover:text-foreground"
+                    : "text-card/60 hover:text-card"
+                }`}
+              >
+                <LogOut className="w-4 h-4" />
+              </button>
+            </div>
+          ) : (
+            <a
+              href="/auth"
+              className={`hidden md:flex items-center gap-1 text-sm font-medium transition-colors px-3 py-1.5 rounded-lg ${
+                isScrolled
+                  ? "text-foreground/80 hover:text-primary hover:bg-muted"
+                  : "text-card/80 hover:text-card hover:bg-card/10"
+              }`}
+            >
+              <User className="w-4 h-4" />
+              Entrar
+            </a>
+          )}
           <button
             className={`hidden md:flex items-center gap-1 text-sm font-medium transition-colors ${
               isScrolled ? "text-muted-foreground" : "text-card/80"
@@ -106,6 +145,34 @@ const SiteHeader = () => {
                   {item.label}
                 </a>
               ))}
+              {user ? (
+                <>
+                  <a
+                    href="/planejar"
+                    className="px-4 py-3 text-sm font-medium rounded-lg text-foreground/80 hover:text-primary hover:bg-muted"
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    Minha Conta
+                  </a>
+                  <button
+                    onClick={() => {
+                      signOut();
+                      setMobileOpen(false);
+                    }}
+                    className="px-4 py-3 text-sm font-medium rounded-lg text-foreground/80 hover:text-destructive hover:bg-muted text-left"
+                  >
+                    Sair
+                  </button>
+                </>
+              ) : (
+                <a
+                  href="/auth"
+                  className="px-4 py-3 text-sm font-medium rounded-lg text-foreground/80 hover:text-primary hover:bg-muted"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  Entrar / Criar Conta
+                </a>
+              )}
             </nav>
           </motion.div>
         )}
