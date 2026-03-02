@@ -56,8 +56,13 @@ type Beach = {
   latitude: number | null;
   longitude: number | null;
   photo_url: string | null;
+  characteristics: string[] | null;
+  infrastructure: string[] | null;
   wave_intensity: string | null;
+  sand_type: string | null;
+  best_season: string | null;
   difficulty_access: string | null;
+  length_meters: number | null;
 };
 
 const WAVE_LABELS: Record<string, string> = {
