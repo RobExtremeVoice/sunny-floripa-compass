@@ -1,13 +1,10 @@
 import { useState, useRef, useEffect } from "react";
-import { useAuth } from "@/hooks/useAuth";
-import { useNavigate } from "react-router-dom";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Skeleton } from "@/components/ui/skeleton";
-import { LogIn, Send, Bot, User, Sparkles, Map } from "lucide-react";
+import { Send, Bot, User, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import { toast } from "sonner";
@@ -17,8 +14,6 @@ type Msg = { role: "user" | "assistant"; content: string };
 const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/plan-trip`;
 
 const TripPlanner = () => {
-  const { user, loading: authLoading } = useAuth();
-  const navigate = useNavigate();
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -34,11 +29,9 @@ const TripPlanner = () => {
     setIsLoading(true);
     let assistantSoFar = "";
 
-    const initialMessages: Msg[] = [];
-
     try {
       await streamChat({
-        messages: initialMessages,
+        messages: [],
         onDelta: (chunk) => {
           assistantSoFar += chunk;
           setMessages([{ role: "assistant", content: assistantSoFar }]);
@@ -82,53 +75,9 @@ const TripPlanner = () => {
     }
   };
 
-  if (authLoading) {
-    return (
-      <div className="min-h-screen bg-background">
-        <SiteHeader />
-        <div className="pt-28 container mx-auto px-4">
-          <Skeleton className="h-64 w-full rounded-xl" />
-        </div>
-      </div>
-    );
-  }
-
-  if (!user) {
-    return (
-      <div className="min-h-screen bg-background">
-        <SEO title="Planeje sua Viagem com IA" url="/planejar" />
-        <SiteHeader />
-        <section className="pt-28 pb-20">
-          <div className="container mx-auto px-4 text-center max-w-lg">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-              <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-ocean flex items-center justify-center">
-                <Sparkles className="w-10 h-10 text-primary-foreground" />
-              </div>
-              <h1 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
-                Planeje com Inteligência Artificial
-              </h1>
-              <p className="text-muted-foreground text-lg mb-8">
-                Nosso assistente IA cria roteiros personalizados para Florianópolis
-                com praias, restaurantes e atividades reais. Entre na sua conta para começar.
-              </p>
-              <Button
-                onClick={() => navigate("/auth")}
-                className="bg-gradient-ocean text-primary-foreground hover:opacity-90 text-base px-8 py-6"
-              >
-                <LogIn className="w-5 h-5 mr-2" />
-                Entrar ou Criar Conta
-              </Button>
-            </motion.div>
-          </div>
-        </section>
-        <SiteFooter />
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <SEO title="Assistente de Viagem IA" url="/planejar" />
+      <SEO title="Planeje sua Viagem com IA — Florianópolis" url="/planejar" />
       <SiteHeader />
 
       {/* Hero */}
@@ -337,7 +286,6 @@ async function streamChat({
     }
   }
 
-  // Final flush
   if (textBuffer.trim()) {
     for (let raw of textBuffer.split("\n")) {
       if (!raw) continue;
