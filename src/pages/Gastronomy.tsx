@@ -264,9 +264,19 @@ const RestaurantCard = ({ restaurant }: { restaurant: Restaurant }) => (
     className="group rounded-xl overflow-hidden shadow-card hover:shadow-card-hover transition-all duration-300 bg-card"
   >
     <div className="relative h-48 overflow-hidden bg-muted">
-      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-muted to-muted-foreground/5">
-        <UtensilsCrossed className="w-12 h-12 text-muted-foreground/20" />
-      </div>
+      {restaurant.photo_url ? (
+        <img
+          src={restaurant.photo_url}
+          alt={restaurant.name}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          loading="lazy"
+        />
+      ) : (
+        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-muted to-muted-foreground/5">
+          <UtensilsCrossed className="w-12 h-12 text-muted-foreground/20" />
+        </div>
+      )}
+      <div className="absolute inset-0 bg-card-hover" />
       <div className="absolute top-3 left-3">
         <Badge className={`text-xs border ${CATEGORY_COLORS[restaurant.category] || "bg-muted text-foreground"}`}>
           {CATEGORY_LABELS[restaurant.category] || restaurant.category}
