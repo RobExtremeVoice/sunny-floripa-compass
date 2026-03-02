@@ -119,6 +119,11 @@ const Entertainment = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title="Entretenimento em Florianópolis – O que fazer"
+        description="Trilhas, passeios de barco, surf, vida noturna e atrações culturais em Florianópolis. Guia completo de atividades na Ilha da Magia."
+        url="/entretenimento"
+      />
       <SiteHeader />
 
       {/* Hero */}
