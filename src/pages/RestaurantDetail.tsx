@@ -354,7 +354,7 @@ const SimilarRestaurants = ({ currentSlug, category }: { currentSlug: string; ca
       const { data, error } = await supabase
         .from("restaurants")
         .select("name, slug, neighborhood, price_range")
-        .eq("category", category)
+        .eq("category", category as any)
         .neq("slug", currentSlug)
         .limit(4);
       if (error) throw error;
