@@ -92,6 +92,128 @@ export type Database = {
         }
         Relationships: []
       }
+      activities: {
+        Row: {
+          address: string | null
+          best_time: string | null
+          category: Database["public"]["Enums"]["entertainment_category"]
+          created_at: string
+          description: string | null
+          difficulty: string | null
+          duration_minutes: number | null
+          highlights: string[] | null
+          id: string
+          instagram: string | null
+          is_free: boolean | null
+          latitude: number | null
+          longitude: number | null
+          min_age: number | null
+          name: string
+          neighborhood: string | null
+          opening_hours: string | null
+          phone: string | null
+          photo_url: string | null
+          photos: string[] | null
+          price_range: number | null
+          region: string
+          slug: string
+          updated_at: string
+          website: string | null
+        }
+        Insert: {
+          address?: string | null
+          best_time?: string | null
+          category: Database["public"]["Enums"]["entertainment_category"]
+          created_at?: string
+          description?: string | null
+          difficulty?: string | null
+          duration_minutes?: number | null
+          highlights?: string[] | null
+          id?: string
+          instagram?: string | null
+          is_free?: boolean | null
+          latitude?: number | null
+          longitude?: number | null
+          min_age?: number | null
+          name: string
+          neighborhood?: string | null
+          opening_hours?: string | null
+          phone?: string | null
+          photo_url?: string | null
+          photos?: string[] | null
+          price_range?: number | null
+          region?: string
+          slug: string
+          updated_at?: string
+          website?: string | null
+        }
+        Update: {
+          address?: string | null
+          best_time?: string | null
+          category?: Database["public"]["Enums"]["entertainment_category"]
+          created_at?: string
+          description?: string | null
+          difficulty?: string | null
+          duration_minutes?: number | null
+          highlights?: string[] | null
+          id?: string
+          instagram?: string | null
+          is_free?: boolean | null
+          latitude?: number | null
+          longitude?: number | null
+          min_age?: number | null
+          name?: string
+          neighborhood?: string | null
+          opening_hours?: string | null
+          phone?: string | null
+          photo_url?: string | null
+          photos?: string[] | null
+          price_range?: number | null
+          region?: string
+          slug?: string
+          updated_at?: string
+          website?: string | null
+        }
+        Relationships: []
+      }
+      activity_reviews: {
+        Row: {
+          activity_id: string
+          author_name: string
+          comment: string | null
+          created_at: string
+          id: string
+          rating: number
+          visit_date: string | null
+        }
+        Insert: {
+          activity_id: string
+          author_name?: string
+          comment?: string | null
+          created_at?: string
+          id?: string
+          rating: number
+          visit_date?: string | null
+        }
+        Update: {
+          activity_id?: string
+          author_name?: string
+          comment?: string | null
+          created_at?: string
+          id?: string
+          rating?: number
+          visit_date?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "activity_reviews_activity_id_fkey"
+            columns: ["activity_id"]
+            isOneToOne: false
+            referencedRelation: "activities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       airlines: {
         Row: {
           code: string
@@ -400,6 +522,13 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
+      entertainment_category:
+        | "trilhas_natureza"
+        | "passeios_barco"
+        | "esportes_aventura"
+        | "vida_noturna"
+        | "cultura_historia"
+        | "familia_criancas"
       flight_status:
         | "scheduled"
         | "boarding"
@@ -541,6 +670,14 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      entertainment_category: [
+        "trilhas_natureza",
+        "passeios_barco",
+        "esportes_aventura",
+        "vida_noturna",
+        "cultura_historia",
+        "familia_criancas",
+      ],
       flight_status: [
         "scheduled",
         "boarding",
