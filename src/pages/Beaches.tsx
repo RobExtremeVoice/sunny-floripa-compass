@@ -5,10 +5,10 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
-import { Input } from "@/components/ui/input";
+import BottomNav from "@/components/BottomNav";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Search, MapPin, Waves, Footprints, Ruler, Sun, ChevronDown, X, Map, LayoutGrid } from "lucide-react";
+import { Search, MapPin, Waves, Footprints, Ruler, Sun, X, Map, LayoutGrid } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const BeachesMap = lazy(() => import("@/components/BeachesMap"));
@@ -115,59 +115,87 @@ const Beaches = () => {
       <SiteHeader />
 
       {/* Hero */}
-      <section className="relative pt-20 pb-12 md:pt-28 md:pb-16 bg-gradient-ocean text-primary-foreground overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-10 left-10 w-64 h-64 rounded-full bg-primary-foreground/20 blur-3xl" />
-          <div className="absolute bottom-0 right-10 w-96 h-96 rounded-full bg-primary-foreground/10 blur-3xl" />
-        </div>
-        <div className="container mx-auto px-4 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <h1 className="font-display text-3xl md:text-5xl font-bold mb-3">
-              Praias de Florianópolis
-            </h1>
-            <p className="text-primary-foreground/80 text-lg max-w-xl mb-8">
-              Descubra as {beaches?.length || "42+"} praias da Ilha da Magia — de
-              enseadas calmas a ondas perfeitas para surf.
-            </p>
-          </motion.div>
+      <section className="relative flex items-end min-h-[65vh] md:min-h-[70vh] pt-20 overflow-hidden">
+        {/* Background photo */}
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: "url(https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1600&q=80)" }}
+        />
+        {/* Gradient overlays */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent" />
+        {/* Teal accent glow */}
+        <div className="absolute top-0 right-0 w-96 h-96 rounded-full blur-3xl opacity-15"
+          style={{ background: "radial-gradient(circle, #26C6A0 0%, transparent 70%)" }} />
 
-          {/* Search + Filters */}
-          <div className="flex flex-col sm:flex-row gap-3 max-w-2xl">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary-foreground/50" />
-              <Input
-                placeholder="Buscar praia..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="pl-10 bg-primary-foreground/15 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/50 focus-visible:ring-primary-foreground/30"
-              />
-            </div>
-          </div>
+        <div className="relative z-10 w-full pb-10 md:pb-14">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7 }}
+            >
+              {/* Badge */}
+              <div className="flex items-center gap-2 mb-5">
+                <span
+                  className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full border"
+                  style={{ color: "#26C6A0", borderColor: "#26C6A0", background: "rgba(38,198,160,0.15)" }}
+                >
+                  <Waves className="w-3.5 h-3.5" />
+                  {beaches?.length || "42+"} Praias · Ilha da Magia
+                </span>
+              </div>
 
-          {/* Region pills */}
-          <div className="flex flex-wrap gap-2 mt-4">
-            {REGIONS.map((r) => (
-              <button
-                key={r}
-                onClick={() => setRegion(r)}
-                className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
-                  region === r
-                    ? "bg-primary-foreground text-primary"
-                    : "bg-primary-foreground/15 text-primary-foreground/80 hover:bg-primary-foreground/25"
-                }`}
-              >
-                {r}
-                {r !== "Todas" && regionCounts[r] && (
-                  <span className="ml-1 opacity-70">({regionCounts[r]})</span>
-                )}
-              </button>
-            ))}
+              <h1 className="font-display text-4xl md:text-6xl font-extrabold text-white mb-3 leading-tight">
+                Praias de{" "}
+                <span className="italic" style={{ color: "#f4c025" }}>Florianópolis</span>
+              </h1>
+              <p className="text-white/70 text-lg md:text-xl mb-8 max-w-xl">
+                De enseadas calmas a ondas perfeitas para surf — encontre sua praia ideal na ilha.
+              </p>
+            </motion.div>
+
+            {/* Search + Region pills */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.15 }}
+              className="bg-white/10 backdrop-blur-md rounded-2xl p-4 md:p-5 border border-white/20 max-w-2xl"
+            >
+              <div className="relative mb-4">
+                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/50" />
+                <input
+                  placeholder="Buscar praia por nome ou descrição..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder:text-white/40 outline-none focus:border-[#26C6A0] transition-colors text-sm"
+                />
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {REGIONS.map((r) => (
+                  <button
+                    key={r}
+                    onClick={() => setRegion(r)}
+                    className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-all ${
+                      region === r
+                        ? "text-slate-900 shadow-md"
+                        : "bg-white/10 text-white/80 border border-white/20 hover:bg-white/20"
+                    }`}
+                    style={region === r ? { background: "#f4c025" } : {}}
+                  >
+                    {r}
+                    {r !== "Todas" && regionCounts[r] && (
+                      <span className="ml-1 opacity-70">({regionCounts[r]})</span>
+                    )}
+                  </button>
+                ))}
+              </div>
+            </motion.div>
           </div>
         </div>
+
+        {/* Bottom fade */}
+        <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-background to-transparent" />
       </section>
 
       {/* Results */}
@@ -252,6 +280,7 @@ const Beaches = () => {
       </AnimatePresence>
 
       <SiteFooter />
+      <BottomNav />
     </div>
   );
 };
@@ -265,57 +294,70 @@ const BeachCard = ({ beach, onClick }: { beach: Beach; onClick: () => void }) =>
     exit={{ opacity: 0, scale: 0.95 }}
     transition={{ duration: 0.3 }}
     onClick={onClick}
-    className="group cursor-pointer rounded-xl overflow-hidden shadow-card hover:shadow-card-hover transition-all duration-300 bg-card"
+    className="group cursor-pointer rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 bg-card"
   >
-    <div className="relative h-52 overflow-hidden">
+    <div className="relative h-64 overflow-hidden">
       <img
         src={beach.photo_url || "/placeholder.svg"}
         alt={beach.name}
-        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700"
+        style={{ transform: "scale(1)", transitionDuration: "700ms" }}
         loading="lazy"
       />
-      <div className="absolute inset-0 bg-card-hover" />
-      <div className="absolute bottom-3 left-3 right-3">
-        <Badge
-          variant="secondary"
-          className="bg-primary-foreground/90 text-primary text-xs mb-1"
+      <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+      <div className="absolute top-3 left-3">
+        <span
+          className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full text-slate-900"
+          style={{ background: "#f4c025" }}
         >
           {beach.region}
-        </Badge>
-        <h3 className="text-primary-foreground font-display text-xl font-bold drop-shadow-md">
+        </span>
+      </div>
+      {beach.wave_intensity && (
+        <div className="absolute top-3 right-3 flex items-center gap-1 bg-black/40 backdrop-blur-sm rounded-full px-2.5 py-1">
+          <Waves className="w-3 h-3 text-cyan-400" />
+          <span className="text-xs font-semibold text-white">{WAVE_LABELS[beach.wave_intensity] || beach.wave_intensity}</span>
+        </div>
+      )}
+      <div className="absolute bottom-0 left-0 right-0 p-4">
+        <h3 className="text-white font-extrabold text-xl leading-tight drop-shadow-md mb-1 group-hover:text-[#f4c025] transition-colors">
           {beach.name}
         </h3>
+        <div className="flex items-center gap-3 text-white/60 text-xs">
+          {beach.difficulty_access && (
+            <span className="flex items-center gap-1">
+              <Footprints className="w-3 h-3" />
+              {ACCESS_LABELS[beach.difficulty_access] || beach.difficulty_access}
+            </span>
+          )}
+          {beach.length_meters && (
+            <span className="flex items-center gap-1">
+              <Ruler className="w-3 h-3" />
+              {beach.length_meters >= 1000
+                ? `${(beach.length_meters / 1000).toFixed(1)}km`
+                : `${beach.length_meters}m`}
+            </span>
+          )}
+        </div>
       </div>
     </div>
     <div className="p-4 space-y-3">
       <p className="text-muted-foreground text-sm line-clamp-2">
         {beach.description}
       </p>
-      <div className="flex flex-wrap gap-1.5">
-        {beach.wave_intensity && (
-          <Badge variant="outline" className="text-xs gap-1">
-            <Waves className="w-3 h-3" />
-            {WAVE_LABELS[beach.wave_intensity] || beach.wave_intensity}
-          </Badge>
-        )}
-        {beach.difficulty_access && (
-          <Badge variant="outline" className="text-xs gap-1">
-            <Footprints className="w-3 h-3" />
-            {ACCESS_LABELS[beach.difficulty_access] || beach.difficulty_access}
-          </Badge>
-        )}
-        {beach.length_meters && (
-          <Badge variant="outline" className="text-xs gap-1">
-            <Ruler className="w-3 h-3" />
-            {beach.length_meters >= 1000
-              ? `${(beach.length_meters / 1000).toFixed(1)}km`
-              : `${beach.length_meters}m`}
-          </Badge>
-        )}
-      </div>
+      {beach.characteristics && beach.characteristics.length > 0 && (
+        <div className="flex flex-wrap gap-1.5">
+          {beach.characteristics.slice(0, 3).map((c) => (
+            <Badge key={c} variant="secondary" className="text-xs">
+              {CHAR_LABELS[c] || c}
+            </Badge>
+          ))}
+        </div>
+      )}
       <Link
         to={`/praias/${beach.slug}`}
-        className="text-xs text-primary hover:underline font-medium"
+        className="text-xs font-bold hover:underline inline-block"
+        style={{ color: "#26C6A0" }}
         onClick={(e) => e.stopPropagation()}
       >
         Ver detalhes →

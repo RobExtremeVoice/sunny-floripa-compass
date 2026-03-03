@@ -12,7 +12,7 @@ interface SEOProps {
 const SITE_NAME = "VisiteFloripa";
 const DEFAULT_DESCRIPTION =
   "Portal turístico de Florianópolis: voos em tempo real, praias, hotéis, restaurantes e roteiros personalizados. Planeje sua viagem para a Ilha da Magia.";
-const DEFAULT_IMAGE = "https://lovable.dev/opengraph-image-p98pqg.png";
+const DEFAULT_IMAGE = "https://images.unsplash.com/photo-1545145879-71cf2f60c2a7?w=1200&q=80";
 const BASE_URL = "https://florianopolisairport.com";
 
 const SEO = ({

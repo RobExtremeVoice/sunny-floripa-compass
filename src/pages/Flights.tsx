@@ -323,11 +323,11 @@ const Flights = () => {
                 <div className="flex flex-col md:flex-row gap-3">
                   <div className="flex-1 flex flex-col gap-1">
                     <label className="text-white/60 text-xs font-semibold uppercase tracking-wider">
-                      Origem
+                      Buscar voo
                     </label>
                     <input
                       className="bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder:text-white/40 outline-none focus:border-[#00A8E8] transition-colors text-sm"
-                      placeholder="Cidade de origem (ex: São Paulo)"
+                      placeholder="Voo, aeroporto, cidade ou companhia..."
                       value={heroOrigin}
                       onChange={(e) => setHeroOrigin(e.target.value)}
                     />

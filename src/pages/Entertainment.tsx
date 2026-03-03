@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
-import { Input } from "@/components/ui/input";
+import BottomNav from "@/components/BottomNav";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
@@ -33,14 +33,6 @@ const CATEGORY_LABELS: Record<string, string> = {
   familia_criancas: "Família & Crianças",
 };
 
-const CATEGORY_COLORS: Record<string, string> = {
-  trilhas_natureza: "bg-emerald-500/10 text-emerald-700 border-emerald-500/20",
-  passeios_barco: "bg-ocean/10 text-ocean-deep border-ocean/20",
-  esportes_aventura: "bg-orange-500/10 text-orange-700 border-orange-500/20",
-  vida_noturna: "bg-purple-500/10 text-purple-700 border-purple-500/20",
-  cultura_historia: "bg-amber-500/10 text-amber-700 border-amber-500/20",
-  familia_criancas: "bg-pink-500/10 text-pink-700 border-pink-500/20",
-};
 
 type Activity = {
   id: string;
@@ -127,56 +119,90 @@ const Entertainment = () => {
       <SiteHeader />
 
       {/* Hero */}
-      <section className="relative pt-20 pb-12 md:pt-28 md:pb-16 bg-gradient-ocean text-primary-foreground overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-10 left-10 w-64 h-64 rounded-full bg-primary-foreground/20 blur-3xl" />
-          <div className="absolute bottom-0 right-10 w-96 h-96 rounded-full bg-primary-foreground/10 blur-3xl" />
-        </div>
-        <div className="container mx-auto px-4 relative z-10">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <h1 className="font-display text-3xl md:text-5xl font-bold mb-3">
-              Entretenimento em Florianópolis
-            </h1>
-            <p className="text-primary-foreground/80 text-lg max-w-xl mb-8">
-              Trilhas, passeios de barco, esportes radicais, vida noturna e muito mais — viva a Ilha da Magia.
-            </p>
-          </motion.div>
+      <section className="relative flex items-end min-h-[65vh] md:min-h-[70vh] pt-20 overflow-hidden">
+        {/* Background photo */}
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: "url(https://images.unsplash.com/photo-1551632811-561732d1e306?w=1600&q=80)" }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/15" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent" />
+        {/* Green accent glow */}
+        <div className="absolute top-0 right-0 w-96 h-96 rounded-full blur-3xl opacity-15"
+          style={{ background: "radial-gradient(circle, #26C6A0 0%, transparent 70%)" }} />
 
-          <div className="flex flex-col sm:flex-row gap-3 max-w-2xl">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary-foreground/50" />
-              <Input
-                placeholder="Buscar atividade ou passeio..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="pl-10 bg-primary-foreground/15 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/50 focus-visible:ring-primary-foreground/30"
-              />
-            </div>
-          </div>
-
-          <div className="flex flex-wrap gap-2 mt-4">
-            {CATEGORIES.map((c) => {
-              const Icon = c.icon;
-              return (
-                <button
-                  key={c.value}
-                  onClick={() => setCategory(c.value)}
-                  className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
-                    category === c.value
-                      ? "bg-primary-foreground text-foreground"
-                      : "bg-primary-foreground/15 text-primary-foreground/80 hover:bg-primary-foreground/25"
-                  }`}
+        <div className="relative z-10 w-full pb-10 md:pb-14">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7 }}
+            >
+              {/* Badge */}
+              <div className="flex items-center gap-2 mb-5">
+                <span
+                  className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full border"
+                  style={{ color: "#26C6A0", borderColor: "#26C6A0", background: "rgba(38,198,160,0.15)" }}
                 >
-                  <Icon className="w-3.5 h-3.5" />
-                  {c.label}
-                  {c.value !== "all" && categoryCounts[c.value] && (
-                    <span className="ml-0.5 opacity-70">({categoryCounts[c.value]})</span>
-                  )}
-                </button>
-              );
-            })}
+                  <Zap className="w-3.5 h-3.5" />
+                  O que fazer · Ilha da Magia
+                </span>
+              </div>
+
+              <h1 className="font-display text-4xl md:text-6xl font-extrabold text-white mb-3 leading-tight">
+                Aventuras em{" "}
+                <span className="italic" style={{ color: "#f4c025" }}>Florianópolis</span>
+              </h1>
+              <p className="text-white/70 text-lg md:text-xl mb-8 max-w-xl">
+                Trilhas, passeios de barco, surf, vida noturna e muito mais — viva a ilha ao máximo.
+              </p>
+            </motion.div>
+
+            {/* Search + Category pills */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.15 }}
+              className="bg-white/10 backdrop-blur-md rounded-2xl p-4 md:p-5 border border-white/20 max-w-2xl"
+            >
+              <div className="relative mb-4">
+                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/50" />
+                <input
+                  placeholder="Buscar atividade, passeio ou atrativo..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder:text-white/40 outline-none focus:border-[#26C6A0] transition-colors text-sm"
+                />
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {CATEGORIES.map((c) => {
+                  const Icon = c.icon;
+                  return (
+                    <button
+                      key={c.value}
+                      onClick={() => setCategory(c.value)}
+                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-semibold transition-all ${
+                        category === c.value
+                          ? "text-slate-900 shadow-md"
+                          : "bg-white/10 text-white/80 border border-white/20 hover:bg-white/20"
+                      }`}
+                      style={category === c.value ? { background: "#f4c025" } : {}}
+                    >
+                      <Icon className="w-3.5 h-3.5" />
+                      {c.label}
+                      {c.value !== "all" && categoryCounts[c.value] && (
+                        <span className="ml-0.5 opacity-70">({categoryCounts[c.value]})</span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </motion.div>
           </div>
         </div>
+
+        {/* Bottom fade */}
+        <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-background to-transparent" />
       </section>
 
       {/* Results */}
@@ -235,6 +261,7 @@ const Entertainment = () => {
       </section>
 
       <SiteFooter />
+      <BottomNav />
     </div>
   );
 };
@@ -262,54 +289,61 @@ const ActivityCard = ({ activity }: { activity: Activity }) => (
     animate={{ opacity: 1, scale: 1 }}
     exit={{ opacity: 0, scale: 0.95 }}
     transition={{ duration: 0.3 }}
-    className="group rounded-xl overflow-hidden shadow-card hover:shadow-card-hover transition-all duration-300 bg-card"
+    className="group rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 bg-card"
   >
-    <div className="relative h-48 overflow-hidden bg-muted">
+    <div className="relative h-56 overflow-hidden bg-muted">
       {activity.photo_url ? (
         <img
           src={activity.photo_url}
           alt={activity.name}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
           loading="lazy"
         />
       ) : (
-        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-muted to-muted-foreground/5">
-          <Ticket className="w-12 h-12 text-muted-foreground/20" />
+        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-emerald-50 to-teal-100 dark:from-slate-800 dark:to-slate-700">
+          <Ticket className="w-12 h-12 text-emerald-200 dark:text-slate-600" />
         </div>
       )}
-      <div className="absolute inset-0 bg-card-hover" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-transparent" />
       <div className="absolute top-3 left-3">
-        <Badge className={`text-xs border ${CATEGORY_COLORS[activity.category] || "bg-muted text-foreground"}`}>
+        <span
+          className="text-xs font-bold px-3 py-1 rounded-full text-slate-900"
+          style={{ background: "#f4c025" }}
+        >
           {CATEGORY_LABELS[activity.category] || activity.category}
-        </Badge>
+        </span>
       </div>
       <div className="absolute top-3 right-3 flex items-center gap-1.5">
         {activity.is_free && (
-          <Badge className="bg-emerald-500 text-white text-xs">Gratuito</Badge>
+          <span className="text-xs font-bold px-2.5 py-1 rounded-full text-white" style={{ background: "#26C6A0" }}>
+            Gratuito
+          </span>
         )}
         {activity.avg_rating && (
-          <div className="flex items-center gap-1 bg-card/90 backdrop-blur-sm rounded-full px-2 py-1">
+          <div className="flex items-center gap-1 bg-black/40 backdrop-blur-sm rounded-full px-2 py-1">
             <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-            <span className="text-xs font-semibold text-foreground">{activity.avg_rating.toFixed(1)}</span>
+            <span className="text-xs font-bold text-white">{activity.avg_rating.toFixed(1)}</span>
           </div>
         )}
+      </div>
+      <div className="absolute bottom-3 left-3 right-3">
+        <h3 className="font-extrabold text-white text-lg leading-tight drop-shadow-md group-hover:text-[#f4c025] transition-colors">
+          {activity.name}
+        </h3>
+        <div className="flex items-center gap-3 text-white/65 text-xs mt-0.5">
+          {activity.neighborhood && (
+            <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {activity.neighborhood}</span>
+          )}
+          {activity.duration_minutes && (
+            <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {formatDuration(activity.duration_minutes)}</span>
+          )}
+        </div>
       </div>
     </div>
     <div className="p-4 space-y-3">
       <div className="flex items-start justify-between gap-2">
-        <h3 className="font-display text-lg font-bold text-foreground group-hover:text-primary transition-colors">
-          {activity.name}
-        </h3>
+        <p className="text-muted-foreground text-sm line-clamp-2 flex-1">{activity.description}</p>
         {activity.price_range && !activity.is_free && <PriceIndicator level={activity.price_range} />}
-      </div>
-      <p className="text-muted-foreground text-sm line-clamp-2">{activity.description}</p>
-      <div className="flex items-center gap-3 text-xs text-muted-foreground">
-        {activity.neighborhood && (
-          <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {activity.neighborhood}</span>
-        )}
-        {activity.duration_minutes && (
-          <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {formatDuration(activity.duration_minutes)}</span>
-        )}
       </div>
       {activity.highlights && activity.highlights.length > 0 && (
         <div className="flex flex-wrap gap-1">
@@ -320,7 +354,8 @@ const ActivityCard = ({ activity }: { activity: Activity }) => (
       )}
       <Link
         to={`/entretenimento/${activity.slug}`}
-        className="text-xs text-primary hover:underline font-medium inline-block"
+        className="text-xs font-bold hover:underline inline-block"
+        style={{ color: "#26C6A0" }}
       >
         Ver detalhes →
       </Link>

@@ -1,16 +1,16 @@
-import { useState, useMemo, lazy, Suspense } from "react";
+import { useState, useMemo } from "react";
 import SEO from "@/components/SEO";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
-import { Input } from "@/components/ui/input";
+import BottomNav from "@/components/BottomNav";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Search, MapPin, UtensilsCrossed, Star, DollarSign,
-  Fish, Wheat, Globe, Coffee, LayoutGrid, Map, Phone,
+  Fish, Wheat, Globe, Coffee, LayoutGrid, Map,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -29,12 +29,6 @@ const CATEGORY_LABELS: Record<string, string> = {
   cafes_doces: "Cafés & Doces",
 };
 
-const CATEGORY_COLORS: Record<string, string> = {
-  frutos_do_mar: "bg-ocean/10 text-ocean-deep border-ocean/20",
-  acoriana: "bg-sand-warm/30 text-foreground border-sand-warm/40",
-  internacional: "bg-tropical-light text-tropical border-tropical/20",
-  cafes_doces: "bg-sunset/10 text-sunset border-sunset/20",
-};
 
 type Restaurant = {
   id: string;
@@ -124,63 +118,90 @@ const Gastronomy = () => {
       <SiteHeader />
 
       {/* Hero */}
-      <section className="relative pt-20 pb-12 md:pt-28 md:pb-16 bg-gradient-sunset text-primary-foreground overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-10 left-10 w-64 h-64 rounded-full bg-primary-foreground/20 blur-3xl" />
-          <div className="absolute bottom-0 right-10 w-96 h-96 rounded-full bg-primary-foreground/10 blur-3xl" />
-        </div>
-        <div className="container mx-auto px-4 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <h1 className="font-display text-3xl md:text-5xl font-bold mb-3">
-              Gastronomia de Florianópolis
-            </h1>
-            <p className="text-primary-foreground/80 text-lg max-w-xl mb-8">
-              Dos frutos do mar frescos à culinária açoriana — descubra os melhores
-              sabores da Ilha da Magia.
-            </p>
-          </motion.div>
+      <section className="relative flex items-end min-h-[65vh] md:min-h-[70vh] pt-20 overflow-hidden">
+        {/* Background photo */}
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: "url(https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1600&q=80)" }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/20" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent" />
+        {/* Warm accent glow */}
+        <div className="absolute top-0 right-0 w-96 h-96 rounded-full blur-3xl opacity-20"
+          style={{ background: "radial-gradient(circle, #FF6F61 0%, transparent 70%)" }} />
 
-          {/* Search */}
-          <div className="flex flex-col sm:flex-row gap-3 max-w-2xl">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary-foreground/50" />
-              <Input
-                placeholder="Buscar restaurante ou prato..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="pl-10 bg-primary-foreground/15 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/50 focus-visible:ring-primary-foreground/30"
-              />
-            </div>
-          </div>
-
-          {/* Category pills */}
-          <div className="flex flex-wrap gap-2 mt-4">
-            {CATEGORIES.map((c) => {
-              const Icon = c.icon;
-              return (
-                <button
-                  key={c.value}
-                  onClick={() => setCategory(c.value)}
-                  className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
-                    category === c.value
-                      ? "bg-primary-foreground text-foreground"
-                      : "bg-primary-foreground/15 text-primary-foreground/80 hover:bg-primary-foreground/25"
-                  }`}
+        <div className="relative z-10 w-full pb-10 md:pb-14">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7 }}
+            >
+              {/* Badge */}
+              <div className="flex items-center gap-2 mb-5">
+                <span
+                  className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full border"
+                  style={{ color: "#FF6F61", borderColor: "#FF6F61", background: "rgba(255,111,97,0.15)" }}
                 >
-                  <Icon className="w-3.5 h-3.5" />
-                  {c.label}
-                  {c.value !== "all" && categoryCounts[c.value] && (
-                    <span className="ml-0.5 opacity-70">({categoryCounts[c.value]})</span>
-                  )}
-                </button>
-              );
-            })}
+                  <UtensilsCrossed className="w-3.5 h-3.5" />
+                  Gastronomia · Ilha da Magia
+                </span>
+              </div>
+
+              <h1 className="font-display text-4xl md:text-6xl font-extrabold text-white mb-3 leading-tight">
+                Sabores de{" "}
+                <span className="italic" style={{ color: "#f4c025" }}>Florianópolis</span>
+              </h1>
+              <p className="text-white/70 text-lg md:text-xl mb-8 max-w-xl">
+                Dos frutos do mar frescos à culinária açoriana — os melhores sabores da ilha.
+              </p>
+            </motion.div>
+
+            {/* Search + Category pills */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.15 }}
+              className="bg-white/10 backdrop-blur-md rounded-2xl p-4 md:p-5 border border-white/20 max-w-2xl"
+            >
+              <div className="relative mb-4">
+                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/50" />
+                <input
+                  placeholder="Buscar restaurante, prato ou especialidade..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder:text-white/40 outline-none focus:border-[#FF6F61] transition-colors text-sm"
+                />
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {CATEGORIES.map((c) => {
+                  const Icon = c.icon;
+                  return (
+                    <button
+                      key={c.value}
+                      onClick={() => setCategory(c.value)}
+                      className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-semibold transition-all ${
+                        category === c.value
+                          ? "text-slate-900 shadow-md"
+                          : "bg-white/10 text-white/80 border border-white/20 hover:bg-white/20"
+                      }`}
+                      style={category === c.value ? { background: "#f4c025" } : {}}
+                    >
+                      <Icon className="w-3.5 h-3.5" />
+                      {c.label}
+                      {c.value !== "all" && categoryCounts[c.value] && (
+                        <span className="ml-0.5 opacity-70">({categoryCounts[c.value]})</span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </motion.div>
           </div>
         </div>
+
+        {/* Bottom fade */}
+        <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-background to-transparent" />
       </section>
 
       {/* Results */}
@@ -244,6 +265,7 @@ const Gastronomy = () => {
       </section>
 
       <SiteFooter />
+      <BottomNav />
     </div>
   );
 };
@@ -267,47 +289,52 @@ const RestaurantCard = ({ restaurant }: { restaurant: Restaurant }) => (
     animate={{ opacity: 1, scale: 1 }}
     exit={{ opacity: 0, scale: 0.95 }}
     transition={{ duration: 0.3 }}
-    className="group rounded-xl overflow-hidden shadow-card hover:shadow-card-hover transition-all duration-300 bg-card"
+    className="group rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 bg-card"
   >
-    <div className="relative h-48 overflow-hidden bg-muted">
+    <div className="relative h-56 overflow-hidden bg-muted">
       {restaurant.photo_url ? (
         <img
           src={restaurant.photo_url}
           alt={restaurant.name}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
           loading="lazy"
         />
       ) : (
-        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-muted to-muted-foreground/5">
-          <UtensilsCrossed className="w-12 h-12 text-muted-foreground/20" />
+        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-orange-50 to-orange-100 dark:from-slate-800 dark:to-slate-700">
+          <UtensilsCrossed className="w-12 h-12 text-orange-200 dark:text-slate-600" />
         </div>
       )}
-      <div className="absolute inset-0 bg-card-hover" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
       <div className="absolute top-3 left-3">
-        <Badge className={`text-xs border ${CATEGORY_COLORS[restaurant.category] || "bg-muted text-foreground"}`}>
+        <span
+          className="text-xs font-bold px-3 py-1 rounded-full text-slate-900"
+          style={{ background: "#f4c025" }}
+        >
           {CATEGORY_LABELS[restaurant.category] || restaurant.category}
-        </Badge>
+        </span>
       </div>
       {restaurant.avg_rating && (
-        <div className="absolute top-3 right-3 flex items-center gap-1 bg-card/90 backdrop-blur-sm rounded-full px-2 py-1">
+        <div className="absolute top-3 right-3 flex items-center gap-1 bg-black/40 backdrop-blur-sm rounded-full px-2.5 py-1">
           <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-          <span className="text-xs font-semibold text-foreground">{restaurant.avg_rating.toFixed(1)}</span>
+          <span className="text-xs font-bold text-white">{restaurant.avg_rating.toFixed(1)}</span>
         </div>
       )}
+      <div className="absolute bottom-3 left-3 right-3">
+        <h3 className="font-extrabold text-white text-lg leading-tight drop-shadow-md group-hover:text-[#f4c025] transition-colors">
+          {restaurant.name}
+        </h3>
+        {restaurant.neighborhood && (
+          <p className="text-white/70 text-xs flex items-center gap-1 mt-0.5">
+            <MapPin className="w-3 h-3" /> {restaurant.neighborhood}
+          </p>
+        )}
+      </div>
     </div>
     <div className="p-4 space-y-3">
       <div className="flex items-start justify-between gap-2">
-        <h3 className="font-display text-lg font-bold text-foreground group-hover:text-primary transition-colors">
-          {restaurant.name}
-        </h3>
+        <p className="text-muted-foreground text-sm line-clamp-2 flex-1">{restaurant.description}</p>
         {restaurant.price_range && <PriceIndicator level={restaurant.price_range} />}
       </div>
-      <p className="text-muted-foreground text-sm line-clamp-2">{restaurant.description}</p>
-      {restaurant.neighborhood && (
-        <p className="text-xs text-muted-foreground flex items-center gap-1">
-          <MapPin className="w-3 h-3" /> {restaurant.neighborhood}
-        </p>
-      )}
       {restaurant.specialties && restaurant.specialties.length > 0 && (
         <div className="flex flex-wrap gap-1">
           {restaurant.specialties.slice(0, 3).map((s) => (
@@ -324,9 +351,10 @@ const RestaurantCard = ({ restaurant }: { restaurant: Restaurant }) => (
       )}
       <Link
         to={`/gastronomia/${restaurant.slug}`}
-        className="text-xs text-primary hover:underline font-medium inline-block"
+        className="text-xs font-bold hover:underline inline-block"
+        style={{ color: "#FF6F61" }}
       >
-        Ver detalhes →
+        Ver cardápio →
       </Link>
     </div>
   </motion.div>
