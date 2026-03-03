@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Send, CheckCircle } from "lucide-react";
+import { Send, CheckCircle, Sparkles } from "lucide-react";
 
 const Newsletter = () => {
   const [email, setEmail] = useState("");
@@ -12,17 +12,21 @@ const Newsletter = () => {
   };
 
   return (
-    <section className="py-20 md:py-28 px-4 bg-secondary">
-      <div className="container mx-auto text-center max-w-2xl">
+    <section className="py-20 md:py-28 px-4 bg-secondary relative overflow-hidden">
+      {/* Decorative element */}
+      <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-ocean/5 blur-3xl -translate-y-1/2 translate-x-1/2" />
+
+      <div className="container mx-auto text-center max-w-2xl relative z-10">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <p className="text-sm font-semibold tracking-widest uppercase text-ocean mb-3 font-body">
-            Fique por dentro
-          </p>
+          <div className="inline-flex items-center gap-2 bg-ocean/10 text-ocean-deep text-xs font-semibold px-4 py-1.5 rounded-full mb-6">
+            <Sparkles className="w-3.5 h-3.5" />
+            Newsletter
+          </div>
           <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
             Receba dicas exclusivas de Floripa
           </h2>
@@ -31,23 +35,27 @@ const Newsletter = () => {
           </p>
 
           {submitted ? (
-            <div className="flex items-center justify-center gap-2 text-tropical font-semibold">
-              <CheckCircle className="w-5 h-5" />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="flex items-center justify-center gap-2 text-tropical font-semibold text-lg"
+            >
+              <CheckCircle className="w-6 h-6" />
               Inscrição realizada com sucesso!
-            </div>
+            </motion.div>
           ) : (
-            <form onSubmit={handleSubmit} className="flex gap-2 max-w-md mx-auto">
+            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Seu melhor email"
                 required
-                className="flex-1 px-5 py-3.5 rounded-xl bg-card border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/30 focus:border-primary transition-all text-sm"
+                className="flex-1 px-5 py-4 rounded-xl bg-card border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/30 focus:border-primary transition-all text-sm shadow-sm"
               />
               <button
                 type="submit"
-                className="bg-gradient-ocean text-primary-foreground px-6 rounded-xl font-semibold text-sm hover:opacity-90 transition-opacity flex items-center gap-2 shrink-0"
+                className="bg-gradient-ocean text-primary-foreground px-7 py-4 rounded-xl font-semibold text-sm hover:opacity-90 hover:shadow-lg active:scale-[0.98] transition-all flex items-center justify-center gap-2 shrink-0"
               >
                 <Send className="w-4 h-4" />
                 Inscrever

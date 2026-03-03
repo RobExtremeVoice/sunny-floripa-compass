@@ -79,6 +79,10 @@
     @apply border-border;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'DM Sans', sans-serif;
@@ -86,6 +90,15 @@
 
   h1, h2, h3, h4 {
     font-family: 'Playfair Display', serif;
+  }
+
+  /* Hide scrollbar for category tabs */
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }
 
