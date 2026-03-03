@@ -1,124 +1,44 @@
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ChevronRight, MapPin } from "lucide-react";
-import heroBeach from "@/assets/hero-beach.jpg";
-import heroBridge from "@/assets/hero-bridge.jpg";
-
-const slides = [
-  {
-    image: heroBeach,
-    title: "Descubra a Ilha da Magia",
-    subtitle: "Praias paradisíacas, natureza exuberante e cultura vibrante esperam por você em Florianópolis",
-    cta: "Explorar Praias",
-    href: "/praias",
-  },
-  {
-    image: heroBridge,
-    title: "Sua Viagem Começa Aqui",
-    subtitle: "Voos em tempo real, hotéis incríveis e roteiros personalizados para sua aventura perfeita",
-    cta: "Planejar Viagem",
-    href: "/planejar",
-  },
-];
-
 const HeroSection = () => {
-  const [current, setCurrent] = useState(0);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % slides.length);
-    }, 7000);
-    return () => clearInterval(timer);
-  }, []);
-
   return (
-    <section className="relative h-[90vh] min-h-[640px] overflow-hidden">
-      {/* Background Images with Ken Burns */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={current}
-          initial={{ opacity: 0, scale: 1.08 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 1.4, ease: "easeInOut" }}
-          className="absolute inset-0"
-        >
-          <img
-            src={slides[current].image}
-            alt={slides[current].title}
-            className="w-full h-full object-cover"
-          />
-        </motion.div>
-      </AnimatePresence>
+    <section className="relative h-[85vh] w-full overflow-hidden">
+      {/* Gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-background-light dark:to-background-dark z-10" />
 
-      {/* Gradient Overlay — more dramatic */}
-      <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/20 to-foreground/5" />
-
-      {/* Location badge */}
-      <motion.div
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5 }}
-        className="absolute top-24 md:top-28 left-4 md:left-auto md:right-8 z-10"
-      >
-        <span className="inline-flex items-center gap-1.5 bg-card/15 backdrop-blur-md text-card text-xs font-medium px-3 py-1.5 rounded-full border border-card/20">
-          <MapPin className="w-3 h-3" />
-          Florianópolis, SC — Brasil
-        </span>
-      </motion.div>
+      {/* Background image */}
+      <div
+        className="absolute inset-0 w-full h-full bg-cover bg-center"
+        style={{
+          backgroundImage:
+            "url('https://lh3.googleusercontent.com/aida-public/AB6AXuAa3Lqj-8oiE-nXgGQp6aOaudweYn3AmWn3qH9XozEVDE3xQGfnyx50k_Dp75JCxfr0sYv0_9hCkpdMcFvI1C5sGeY4pj15kAgB6uOHR38mTnBm26gm5qGRRyw57BKbFrN5apvuBSd8G4HLWejJr8M-XHnBrAoj5aPIrBq1fngXFEFAYGFQCDKaqtluRa3bpNxcWwX4xwNCNSh2cZW0JVrvWtosmzJecWCLiI5FPtLuYr3NfnIG1_G4_AkfAMTEPG1OKIajGDuNUpQ')",
+        }}
+      />
 
       {/* Content */}
-      <div className="relative z-10 container mx-auto px-4 h-full flex flex-col justify-end pb-24 md:pb-32">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={current}
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -30 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="max-w-2xl"
+      <div className="relative z-20 h-full flex flex-col items-center justify-center text-center px-4 max-w-4xl mx-auto">
+        <h1 className="text-5xl md:text-7xl font-extrabold text-white mb-6 drop-shadow-2xl">
+          Descubra a{" "}
+          <span
+            className="text-primary italic relative inline-block after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-full after:h-1 after:bg-primary/30 after:rounded-full"
+            style={{ textShadow: "0 2px 10px rgba(244,192,37,0.4)" }}
           >
-            <motion.h1
-              className="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-card leading-[1.1] mb-5"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.15, duration: 0.6 }}
-            >
-              {slides[current].title}
-            </motion.h1>
-            <motion.p
-              className="text-card/80 text-lg md:text-xl mb-8 max-w-xl font-body leading-relaxed"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.6 }}
-            >
-              {slides[current].subtitle}
-            </motion.p>
-            <motion.a
-              href={slides[current].href}
-              className="inline-flex items-center gap-2 bg-gradient-ocean text-primary-foreground px-8 py-4 rounded-xl text-base font-semibold shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.45, duration: 0.6 }}
-            >
-              {slides[current].cta}
-              <ChevronRight className="w-5 h-5" />
-            </motion.a>
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Slide Indicators */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-2.5">
-          {slides.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setCurrent(i)}
-              className={`h-1.5 rounded-full transition-all duration-500 ${
-                i === current ? "w-12 bg-card" : "w-5 bg-card/35 hover:bg-card/50"
-              }`}
-              aria-label={`Slide ${i + 1}`}
-            />
-          ))}
+            Ilha da Magia
+          </span>
+        </h1>
+        <p className="text-xl md:text-2xl text-white/90 mb-10 font-medium max-w-2xl">
+          Sol, mar e experiências inesquecíveis esperam por você no coração de Santa Catarina.
+        </p>
+        <div className="flex flex-col sm:flex-row gap-4">
+          <a
+            href="/praias"
+            className="bg-primary text-slate-900 px-10 py-4 rounded-xl font-bold text-lg hover:scale-105 transition-transform flex items-center gap-2 justify-center"
+          >
+            <span className="material-symbols-outlined">explore</span>
+            Explorar Floripa
+          </a>
+          <button className="bg-white/10 backdrop-blur-md text-white border border-white/30 px-10 py-4 rounded-xl font-bold text-lg hover:bg-white/20 transition-all flex items-center gap-2 justify-center">
+            <span className="material-symbols-outlined">play_circle</span>
+            Ver Vídeo
+          </button>
         </div>
       </div>
     </section>

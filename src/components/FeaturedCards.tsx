@@ -1,126 +1,59 @@
-import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
-import cardFlights from "@/assets/card-flights.jpg";
-import cardBeaches from "@/assets/card-beaches.jpg";
-import cardHotels from "@/assets/card-hotels.jpg";
-import cardDining from "@/assets/card-dining.jpg";
-
-const features = [
+const cards = [
   {
-    image: cardFlights,
-    title: "Voos em Tempo Real",
-    description: "Acompanhe chegadas e partidas do Aeroporto de Florianópolis ao vivo",
-    tag: "Ao Vivo",
-    tagColor: "bg-coral",
-    href: "/flights",
-  },
-  {
-    image: cardBeaches,
-    title: "Melhores Praias",
-    description: "42 praias paradisíacas para todos os estilos — das mais calmas às ideais para surf",
-    tag: "Top 10",
-    tagColor: "bg-ocean",
+    image:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuCJ2-KwfIS3yM8IO1W_lP0sOhN-yUX8_b87YyArz3aU7NI28AI77v7BwDxuUDCnubRHrAeNDuVFreZGZu-o-9xfyH8SEZ9opAjLZFrSzeFzM8RozxdpzbrykdKV1zzZ8jIVSG5uKVWmOGMw5DEQvMv66lprTQHbw_eyXPxSoqGUey4rCrfEZTo2Nw9XMEJLoWIR5_ix1HqRNbmo52c7XNCcxoQBM0li-vMKiVVWTtzG9WGAjpps587tAa-gJfzbivBjRL9owcj90xg",
+    title: "Praias Incríveis",
+    description: "Explore turquoise waters and white sands across 42 beaches.",
     href: "/praias",
   },
   {
-    image: cardHotels,
-    title: "Hotéis Recomendados",
-    description: "Encontre a hospedagem perfeita com os melhores preços e avaliações",
-    tag: "Ofertas",
-    tagColor: "bg-tropical",
-    href: "/hospedagem",
+    image:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuALoHrAvepP2jnoyxC0s7p6H5vjLQAmjoPUSH3mTgEnEBHKkhhNkfjkC5Xs3whgPE3KToVEWjPMKyqa698uDbN6h8TyXocPhApXR3_98DVBl1yRxScyFD8pKxe3Fa2V8sKmVRUfJNvFFVYBs8odeiWB4qxrU5lkPTw26c-bLMEzmYmTcZdVTPEFSx3Xo2lKh4tXVz8aIKsrwxydFuHngNRIDp377Bw893W3GdnAHlr85698DtnneBQgSrYcT0goeKngNYi3i0Jh7j4",
+    title: "Gastronomia Premiada",
+    description: "Savor the best seafood in the region at Ribeirão da Ilha.",
+    href: "/gastronomia",
   },
   {
-    image: cardDining,
-    title: "Restaurantes Populares",
-    description: "Frutos do mar frescos, culinária açoriana e gastronomia internacional",
-    tag: "Novo",
-    tagColor: "bg-sunset",
-    href: "/gastronomia",
+    image:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuAbffhyDt0bzdCQRFX89Rb48b15UJVCL9CtVxEMkAnv-N9QlC5xMBzP4SIiMAUkFiTYzZwaaLeEBeOvYnGtugkhfgP643eV3PUgN7p67iNJDegxTJgx94eS3woBjgHsqLvtrFU8TsCar-hFixbztDZT83P80Cdbm5B3JYjkAUvrYaXXM5jSxPtJw_Vof1sTln4uvFJhY8-VCMvj2vjAgjK2ApSrcUfJBXmbcCSbX5coLhCVTwNvIW_CVx-lLzc0Lgvo7K90j9npmOY",
+    title: "Trilhas na Mata Atlântica",
+    description: "Adventure through lush coastal forests and hidden waterfalls.",
+    href: "/entretenimento",
+  },
+  {
+    image:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuAl-6_iRUherjsOjSi6FG0Hpxy_5oNYXsvqZ5GY1I5w04sKtsKuUW-j7UuEB648B8IsnFMdceZViEMJypHY8rP5xmlBqxENV3CpQ8hUQueLqUYL6iyOmX73kQg-XtLdFCINN2l2kwJ2ztlG1q-W5McnL0L2nrMOSyFUvPcyC9YJIyXFGG4KNwh4-dXCc0S9_ssui83670-CN7FSWMud4RaA71WL_cTGGmt_zRigt8dX_s4PaxHqxX_DVCgz6bnvnMgnW5H7SzkjNMQ",
+    title: "Cultura Local",
+    description: "Discover the rich history, lace-makers, and Azorean traditions.",
+    href: "/entretenimento",
   },
 ];
 
-const container = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.15 } },
-};
-
-const item = {
-  hidden: { opacity: 0, y: 40 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" as const } },
-};
-
 const FeaturedCards = () => {
   return (
-    <section className="py-20 md:py-28 px-4">
-      <div className="container mx-auto">
-        {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-14"
-        >
-          <p className="text-sm font-semibold tracking-widest uppercase text-ocean mb-3 font-body">
-            Explore Florianópolis
-          </p>
-          <h2 className="font-display text-3xl md:text-5xl font-bold text-foreground mb-4">
-            Tudo que você precisa em um só lugar
-          </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto font-body">
-            De voos em tempo real a praias secretas — planeje cada detalhe da sua viagem perfeita
-          </p>
-        </motion.div>
-
-        {/* Cards Grid */}
-        <motion.div
-          variants={container}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: "-80px" }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
-        >
-          {features.map((feat) => (
-            <motion.a
-              key={feat.title}
-              variants={item}
-              href={feat.href}
-              className="group relative rounded-2xl overflow-hidden aspect-[3/4] shadow-card hover:shadow-card-hover transition-all duration-300"
-            >
-              {/* Image */}
-              <img
-                src={feat.image}
-                alt={feat.title}
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                loading="lazy"
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
+      <div className="text-center mb-16">
+        <h2 className="text-3xl md:text-4xl font-extrabold mb-4">Viva a Ilha</h2>
+        <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto italic">
+          De picos de surf de classe mundial a vilas coloniais escondidas.
+        </p>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        {cards.map((card) => (
+          <a key={card.title} href={card.href} className="group cursor-pointer">
+            <div className="relative h-[400px] rounded-2xl overflow-hidden mb-4 shadow-xl">
+              <div
+                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                style={{ backgroundImage: `url('${card.image}')` }}
               />
-
-              {/* Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/10 to-transparent transition-opacity duration-300 group-hover:from-foreground/80" />
-
-              {/* Tag */}
-              <span
-                className={`absolute top-4 left-4 ${feat.tagColor} text-primary-foreground text-xs font-bold px-3 py-1.5 rounded-full shadow-md`}
-              >
-                {feat.tag}
-              </span>
-
-              {/* Content */}
-              <div className="absolute bottom-0 left-0 right-0 p-5 translate-y-1 group-hover:translate-y-0 transition-transform duration-300">
-                <h3 className="font-display text-xl font-bold text-card mb-1.5">
-                  {feat.title}
-                </h3>
-                <p className="text-card/70 text-sm font-body mb-3 line-clamp-2 opacity-80 group-hover:opacity-100 transition-opacity">
-                  {feat.description}
-                </p>
-                <span className="inline-flex items-center gap-1.5 text-card text-sm font-semibold group-hover:gap-2.5 transition-all duration-300">
-                  Explorar <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-                </span>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+              <div className="absolute bottom-6 left-6 right-6">
+                <h3 className="text-white text-xl font-bold mb-1">{card.title}</h3>
+                <p className="text-white/80 text-sm line-clamp-2">{card.description}</p>
               </div>
-            </motion.a>
-          ))}
-        </motion.div>
+            </div>
+          </a>
+        ))}
       </div>
     </section>
   );

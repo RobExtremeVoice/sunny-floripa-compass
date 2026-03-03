@@ -1,92 +1,58 @@
 import { useState, useEffect } from "react";
-import { Menu, X, ChevronDown } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useLocation } from "react-router-dom";
 
-const navItems = [
-  { label: "Voos", href: "/flights" },
-  { label: "Hospedagem", href: "/hospedagem" },
-  { label: "Praias", href: "/praias" },
-  { label: "Gastronomia", href: "/gastronomia" },
-  { label: "Entretenimento", href: "/entretenimento" },
-  { label: "Planeje sua Viagem", href: "/planejar", highlight: true },
-];
-
 const SiteHeader = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
-    const onScroll = () => setIsScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  // Close mobile menu on route change
-  useEffect(() => {
     setMobileOpen(false);
   }, [location.pathname]);
 
-  const isActive = (href: string) => location.pathname === href;
-
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? "bg-card/95 backdrop-blur-md shadow-card border-b border-border"
-          : "bg-gradient-to-b from-black/50 to-transparent"
-      }`}
-    >
-      <div className="container mx-auto flex items-center justify-between h-16 md:h-20 px-4">
-        {/* Logo */}
-        <a href="/" className="flex items-center gap-2 group">
-          <span
-            className={`font-display text-xl md:text-2xl font-bold tracking-tight transition-colors ${
-              isScrolled ? "text-primary" : "text-card"
-            }`}
-          >
-            Visite<span className="font-light group-hover:font-normal transition-all">Floripa</span>
-          </span>
-        </a>
-
-        {/* Desktop Nav */}
-        <nav className="hidden lg:flex items-center gap-0.5">
-          {navItems.map((item) => (
-            <a
-              key={item.label}
-              href={item.href}
-              className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 relative ${
-                item.highlight
-                  ? "bg-gradient-ocean text-primary-foreground hover:opacity-90 hover:shadow-md"
-                  : isScrolled
-                  ? `hover:text-primary hover:bg-muted ${isActive(item.href) ? "text-primary bg-muted" : "text-foreground/70"}`
-                  : `hover:text-card hover:bg-card/10 ${isActive(item.href) ? "text-card bg-card/10" : "text-card/80"}`
-              }`}
-            >
-              {item.label}
+    <header className="sticky top-0 z-50 bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-md border-b border-primary/10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-20">
+          {/* Logo + Nav */}
+          <div className="flex items-center gap-10">
+            <a className="flex items-center gap-2 group" href="/">
+              <span className="material-symbols-outlined text-primary text-3xl transition-transform group-hover:scale-110">sailing</span>
+              <span className="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100">
+                Visit<span className="text-primary">Floripa</span>
+              </span>
             </a>
-          ))}
-        </nav>
+            <nav className="hidden md:flex space-x-8">
+              <a className="text-sm font-semibold hover:text-primary transition-colors" href="/praias">Destinos</a>
+              <a className="text-sm font-semibold hover:text-primary transition-colors" href="/entretenimento">O que fazer</a>
+              <a className="text-sm font-semibold hover:text-primary transition-colors" href="/planejar">Planeje sua viagem</a>
+            </nav>
+          </div>
 
-        {/* Language + Mobile Toggle */}
-        <div className="flex items-center gap-2">
-          <button
-            className={`hidden md:flex items-center gap-1 text-sm font-medium transition-colors ${
-              isScrolled ? "text-muted-foreground hover:text-foreground" : "text-card/70 hover:text-card"
-            }`}
-          >
-            PT <ChevronDown className="w-3 h-3" />
-          </button>
-          <button
-            className={`lg:hidden p-2 rounded-lg transition-colors ${
-              isScrolled ? "text-foreground" : "text-card"
-            }`}
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Menu"
-          >
-            {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+          {/* Actions */}
+          <div className="flex items-center gap-4">
+            <div className="hidden lg:flex items-center bg-primary/10 rounded-full px-4 py-2 border border-primary/20">
+              <span className="material-symbols-outlined text-primary mr-2" style={{ fontSize: '18px' }}>search</span>
+              <input
+                className="bg-transparent border-none focus:ring-0 text-sm w-40 placeholder:text-slate-500 dark:placeholder:text-slate-400 outline-none"
+                placeholder="Buscar experiências..."
+                type="text"
+              />
+            </div>
+            <a
+              href="/planejar"
+              className="bg-primary text-slate-900 px-6 py-2.5 rounded-full font-bold text-sm hover:brightness-105 transition-all shadow-lg shadow-primary/20"
+            >
+              Reserve Agora
+            </a>
+            <button
+              className="md:hidden text-slate-900 dark:text-slate-100"
+              onClick={() => setMobileOpen(!mobileOpen)}
+              aria-label="Menu"
+            >
+              <span className="material-symbols-outlined">{mobileOpen ? "close" : "menu"}</span>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -98,24 +64,28 @@ const SiteHeader = () => {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25 }}
-            className="lg:hidden bg-card border-b border-border overflow-hidden"
+            className="md:hidden bg-background border-b border-border overflow-hidden"
           >
             <nav className="flex flex-col p-4 gap-1">
-              {navItems.map((item) => (
+              {[
+                { label: "Destinos", href: "/praias" },
+                { label: "O que fazer", href: "/entretenimento" },
+                { label: "Planeje sua viagem", href: "/planejar" },
+              ].map((item) => (
                 <a
                   key={item.label}
                   href={item.href}
-                  className={`px-4 py-3 text-sm font-medium rounded-lg transition-colors ${
-                    item.highlight
-                      ? "bg-gradient-ocean text-primary-foreground text-center"
-                      : isActive(item.href)
-                      ? "text-primary bg-muted"
-                      : "text-foreground/80 hover:text-primary hover:bg-muted"
-                  }`}
+                  className="px-4 py-3 text-sm font-semibold rounded-lg hover:text-primary hover:bg-primary/10 transition-colors"
                 >
                   {item.label}
                 </a>
               ))}
+              <a
+                href="/planejar"
+                className="mt-2 bg-primary text-slate-900 px-4 py-3 rounded-lg font-bold text-sm text-center"
+              >
+                Reserve Agora
+              </a>
             </nav>
           </motion.div>
         )}

@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { Send, CheckCircle, Sparkles } from "lucide-react";
 
 const Newsletter = () => {
   const [email, setEmail] = useState("");
@@ -12,57 +10,45 @@ const Newsletter = () => {
   };
 
   return (
-    <section className="py-20 md:py-28 px-4 bg-secondary relative overflow-hidden">
-      {/* Decorative element */}
-      <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-ocean/5 blur-3xl -translate-y-1/2 translate-x-1/2" />
-
-      <div className="container mx-auto text-center max-w-2xl relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <div className="inline-flex items-center gap-2 bg-ocean/10 text-ocean-deep text-xs font-semibold px-4 py-1.5 rounded-full mb-6">
-            <Sparkles className="w-3.5 h-3.5" />
-            Newsletter
-          </div>
-          <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
-            Receba dicas exclusivas de Floripa
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div className="bg-primary rounded-[2.5rem] p-8 md:p-16 flex flex-col md:flex-row items-center justify-between gap-10 shadow-2xl shadow-primary/30">
+        <div className="text-center md:text-left md:w-1/2">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4">
+            Receba o Sol de Floripa
           </h2>
-          <p className="text-muted-foreground text-lg mb-8 font-body">
-            Ofertas de hotéis, eventos especiais e roteiros personalizados direto no seu email
+          <p className="text-slate-800 text-lg font-medium">
+            Junte-se a mais de 50.000 amantes da ilha e receba as melhores dicas de viagem, lugares secretos e ofertas
+            exclusivas.
           </p>
-
+        </div>
+        <div className="w-full md:w-auto">
           {submitted ? (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="flex items-center justify-center gap-2 text-tropical font-semibold text-lg"
-            >
-              <CheckCircle className="w-6 h-6" />
+            <div className="flex items-center gap-2 text-slate-900 font-bold text-lg justify-center">
+              <span className="material-symbols-outlined">check_circle</span>
               Inscrição realizada com sucesso!
-            </motion.div>
+            </div>
           ) : (
-            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
               <input
+                className="px-6 py-4 rounded-xl border-none focus:ring-4 focus:ring-white/50 min-w-[300px] text-slate-900 outline-none"
+                placeholder="Seu melhor e-mail"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Seu melhor email"
                 required
-                className="flex-1 px-5 py-4 rounded-xl bg-card border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/30 focus:border-primary transition-all text-sm shadow-sm"
               />
               <button
+                className="bg-slate-900 text-white px-8 py-4 rounded-xl font-bold hover:bg-slate-800 transition-colors"
                 type="submit"
-                className="bg-gradient-ocean text-primary-foreground px-7 py-4 rounded-xl font-semibold text-sm hover:opacity-90 hover:shadow-lg active:scale-[0.98] transition-all flex items-center justify-center gap-2 shrink-0"
               >
-                <Send className="w-4 h-4" />
-                Inscrever
+                Inscrever-se
               </button>
             </form>
           )}
-        </motion.div>
+          <p className="text-xs text-slate-800 mt-3 font-medium text-center md:text-left">
+            Respeitamos sua privacidade. Cancele a inscrição a qualquer momento.
+          </p>
+        </div>
       </div>
     </section>
   );
