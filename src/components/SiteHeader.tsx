@@ -35,7 +35,7 @@ const SiteHeader = () => {
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
           ? "bg-card/95 backdrop-blur-md shadow-card border-b border-border"
-          : "bg-transparent"
+          : "bg-gradient-to-b from-black/50 to-transparent"
       }`}
     >
       <div className="container mx-auto flex items-center justify-between h-16 md:h-20 px-4">
