@@ -5,7 +5,6 @@ import FeaturedCards from "@/components/FeaturedCards";
 import SunnyCompass from "@/components/SunnyCompass";
 import StoriesSection from "@/components/StoriesSection";
 import InstagramFeed from "@/components/InstagramFeed";
-import Newsletter from "@/components/Newsletter";
 import SiteFooter from "@/components/SiteFooter";
 import BottomNav from "@/components/BottomNav";
 import SEO from "@/components/SEO";
@@ -23,7 +22,6 @@ const Index = () => {
         <SunnyCompass />
         <StoriesSection />
         <InstagramFeed />
-        <Newsletter />
       </main>
       <SiteFooter />
       <BottomNav />

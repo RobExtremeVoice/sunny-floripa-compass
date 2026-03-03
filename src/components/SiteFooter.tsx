@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import Newsletter from "./Newsletter";
 
 const footerLinks = {
   "Planeje sua viagem": [
@@ -29,6 +30,8 @@ const socialLinks = [
 
 const SiteFooter = () => {
   return (
+    <>
+    <Newsletter />
     <footer className="bg-slate-900 text-slate-100 pt-16 pb-24 md:pt-20 md:pb-10">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
 
@@ -99,32 +102,6 @@ const SiteFooter = () => {
           </div>
         </div>
 
-        {/* CTA Newsletter strip */}
-        <div
-          className="rounded-2xl p-6 md:p-8 mb-10 flex flex-col md:flex-row md:items-center md:justify-between gap-6"
-          style={{ background: "linear-gradient(135deg, #1a2a1a 0%, #0f1f2a 100%)", border: "1px solid rgba(244,192,37,0.15)" }}
-        >
-          <div>
-            <p className="text-xs font-bold uppercase tracking-widest text-primary mb-1">Newsletter</p>
-            <h3 className="text-xl font-extrabold text-white">Dicas exclusivas da ilha na sua caixa</h3>
-            <p className="text-slate-400 text-sm mt-1">Roteiros, promoções de voos e eventos em Floripa.</p>
-          </div>
-          <form className="flex gap-2 flex-shrink-0 w-full md:w-auto" onSubmit={(e) => e.preventDefault()}>
-            <input
-              type="email"
-              placeholder="seu@email.com"
-              className="flex-1 md:w-52 px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white placeholder:text-slate-500 outline-none focus:border-primary transition-colors"
-            />
-            <button
-              type="submit"
-              className="px-5 py-2.5 rounded-xl font-bold text-slate-900 text-sm hover:opacity-90 transition-opacity"
-              style={{ background: "#f4c025" }}
-            >
-              Assinar
-            </button>
-          </form>
-        </div>
-
         {/* Bottom bar */}
         <div className="border-t border-slate-800 pt-8 flex flex-col gap-4 md:flex-row md:justify-between md:items-center">
           <div className="flex items-center gap-4">
@@ -147,6 +124,7 @@ const SiteFooter = () => {
         </div>
       </div>
     </footer>
+    </>
   );
 };
 
