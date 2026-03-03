@@ -8,6 +8,7 @@ import { AuthProvider } from "@/hooks/useAuth";
 import { TravelAssistantProvider } from "@/contexts/TravelAssistantContext";
 import TravelAssistantDrawer from "@/components/TravelAssistantDrawer";
 import BottomNav from "@/components/BottomNav";
+import ScrollToTop from "@/components/ScrollToTop";
 import Index from "./pages/Index";
 import Flights from "./pages/Flights";
 import Accommodations from "./pages/Accommodations";
@@ -35,6 +36,7 @@ const App = () => (
           <Toaster />
           <Sonner />
           <BrowserRouter>
+            <ScrollToTop />
             <TravelAssistantDrawer />
             <BottomNav />
             <Routes>
