@@ -4,11 +4,10 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
+import BottomNav from "@/components/BottomNav";
 import SEO from "@/components/SEO";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Search, Clock, Calendar, User, BookOpen, Tag } from "lucide-react";
+import { Clock, BookOpen, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const CATEGORIES = [
@@ -21,13 +20,22 @@ const CATEGORIES = [
   { value: "vida-noturna", label: "Vida Noturna" },
 ] as const;
 
-const CATEGORY_COLORS: Record<string, string> = {
-  praias: "bg-ocean/10 text-ocean-deep border-ocean/20",
-  gastronomia: "bg-sunset/10 text-sunset border-sunset/20",
-  aventura: "bg-emerald-500/10 text-emerald-700 border-emerald-500/20",
-  roteiros: "bg-purple-500/10 text-purple-700 border-purple-500/20",
-  dicas: "bg-amber-500/10 text-amber-700 border-amber-500/20",
-  "vida-noturna": "bg-pink-500/10 text-pink-700 border-pink-500/20",
+const CATEGORY_COLOR: Record<string, string> = {
+  praias: "#0EA5E9",
+  gastronomia: "#FF6F61",
+  aventura: "#26C6A0",
+  roteiros: "#8B5CF6",
+  dicas: "#f4c025",
+  "vida-noturna": "#EC4899",
+};
+
+const CATEGORY_LABEL: Record<string, string> = {
+  praias: "Praias",
+  gastronomia: "Gastronomia",
+  aventura: "Aventura",
+  roteiros: "Roteiros",
+  dicas: "Dicas",
+  "vida-noturna": "Vida Noturna",
 };
 
 type BlogPost = {
@@ -77,7 +85,7 @@ const Blog = () => {
   const rest = filtered.slice(1);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#f8f8f5]">
       <SEO
         title="Blog – Dicas de Viagem para Florianópolis"
         description="Artigos, roteiros e dicas de viagem para Florianópolis. Praias, gastronomia, trilhas e vida noturna na Ilha da Magia."
@@ -85,113 +93,127 @@ const Blog = () => {
       />
       <SiteHeader />
 
-      {/* Hero */}
-      <section className="relative pt-20 pb-12 md:pt-28 md:pb-16 bg-gradient-to-br from-foreground to-foreground/80 text-primary-foreground overflow-hidden">
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-10 left-10 w-64 h-64 rounded-full bg-primary-foreground/20 blur-3xl" />
-          <div className="absolute bottom-0 right-10 w-96 h-96 rounded-full bg-primary-foreground/10 blur-3xl" />
-        </div>
-        <div className="container mx-auto px-4 relative z-10">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <div className="flex items-center gap-2 mb-3">
-              <BookOpen className="w-5 h-5 text-primary-foreground/70" />
-              <span className="text-primary-foreground/70 text-sm font-medium uppercase tracking-wider">Blog</span>
-            </div>
-            <h1 className="font-display text-3xl md:text-5xl font-bold mb-3">
-              Dicas & Roteiros de Florianópolis
-            </h1>
-            <p className="text-primary-foreground/70 text-lg max-w-xl mb-8">
-              Tudo que você precisa saber para planejar a viagem perfeita para a Ilha da Magia.
-            </p>
-          </motion.div>
+      {/* Hero with photo background */}
+      <section
+        className="relative flex items-end min-h-[65vh] pt-20 bg-cover bg-center"
+        style={{ backgroundImage: "url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1600&q=80')" }}
+      >
+        {/* Overlays */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/20" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent" />
 
-          <div className="flex flex-col sm:flex-row gap-3 max-w-2xl">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary-foreground/50" />
-              <Input
-                placeholder="Buscar artigo..."
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-8 pb-10">
+          {/* Badge */}
+          <span className="inline-flex items-center gap-2 bg-[#f4c025] text-slate-900 text-xs font-extrabold uppercase tracking-widest px-3 py-1.5 rounded-full mb-5">
+            <BookOpen className="w-3.5 h-3.5" />
+            Blog de Viagem
+          </span>
+
+          <h1 className="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-3 drop-shadow-lg">
+            Dicas & Roteiros<br />
+            <span className="text-[#f4c025] italic">da Ilha da Magia</span>
+          </h1>
+          <p className="text-white/75 text-lg mb-8 max-w-xl">
+            Tudo que você precisa para planejar a viagem perfeita para Florianópolis.
+          </p>
+
+          {/* Search + filters glass panel */}
+          <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20 max-w-2xl">
+            <div className="relative mb-3">
+              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-white/60 text-lg">search</span>
+              <input
+                type="text"
+                placeholder="Buscar artigo, destino, dica..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="pl-10 bg-primary-foreground/15 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/50 focus-visible:ring-primary-foreground/30"
+                className="w-full pl-10 pr-4 py-2.5 bg-white/10 border border-white/20 rounded-xl text-white placeholder:text-white/50 text-sm outline-none focus:border-[#f4c025] transition-colors"
               />
             </div>
-          </div>
-
-          <div className="flex flex-wrap gap-2 mt-4">
-            {CATEGORIES.map((c) => (
-              <button
-                key={c.value}
-                onClick={() => setCategory(c.value)}
-                className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
-                  category === c.value
-                    ? "bg-primary-foreground text-foreground"
-                    : "bg-primary-foreground/15 text-primary-foreground/80 hover:bg-primary-foreground/25"
-                }`}
-              >
-                {c.label}
-              </button>
-            ))}
+            <div className="flex flex-wrap gap-2">
+              {CATEGORIES.map((c) => (
+                <button
+                  key={c.value}
+                  onClick={() => setCategory(c.value)}
+                  className="px-3 py-1.5 rounded-full text-xs font-bold transition-all"
+                  style={
+                    category === c.value
+                      ? { background: "#f4c025", color: "#1a1a1a" }
+                      : { background: "rgba(255,255,255,0.12)", color: "rgba(255,255,255,0.8)" }
+                  }
+                >
+                  {c.label}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* Content */}
-      <section className="container mx-auto px-4 py-10">
+      <section className="max-w-7xl mx-auto px-6 lg:px-8 py-12 pb-28 md:pb-12">
         {isLoading ? (
-          <div className="space-y-6">
-            <Skeleton className="h-80 w-full rounded-xl" />
+          <div className="space-y-8">
+            <Skeleton className="h-80 w-full rounded-2xl" />
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {Array.from({ length: 3 }).map((_, i) => (
-                <Skeleton key={i} className="h-72 rounded-xl" />
+              {Array.from({ length: 6 }).map((_, i) => (
+                <Skeleton key={i} className="h-72 rounded-2xl" />
               ))}
             </div>
           </div>
         ) : filtered.length === 0 ? (
-          <div className="text-center py-20 text-muted-foreground">
+          <div className="text-center py-20 text-slate-400">
             <BookOpen className="w-12 h-12 mx-auto mb-3 opacity-40" />
-            <p className="text-lg font-medium">Nenhum artigo encontrado</p>
-            <p className="text-sm">Tente ajustar os filtros de busca.</p>
+            <p className="text-lg font-bold text-slate-600">Nenhum artigo encontrado</p>
+            <p className="text-sm mt-1">Tente ajustar os filtros de busca.</p>
           </div>
         ) : (
           <div className="space-y-10">
+
             {/* Featured Post */}
             {featured && (
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
                 <Link to={`/blog/${featured.slug}`} className="group block">
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 bg-card rounded-2xl overflow-hidden border border-border shadow-card hover:shadow-card-hover transition-all">
-                    <div className="h-64 lg:h-auto overflow-hidden">
-                      {featured.cover_image ? (
-                        <img
-                          src={featured.cover_image}
-                          alt={featured.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        />
-                      ) : (
-                        <div className="w-full h-full bg-gradient-to-br from-muted to-muted-foreground/5 flex items-center justify-center">
-                          <BookOpen className="w-16 h-16 text-muted-foreground/20" />
-                        </div>
-                      )}
-                    </div>
-                    <div className="p-6 lg:p-8 flex flex-col justify-center">
-                      <div className="flex items-center gap-2 mb-3">
-                        <Badge className={`text-xs border ${CATEGORY_COLORS[featured.category] || "bg-muted text-foreground"}`}>
-                          {featured.category}
-                        </Badge>
+                  <div className="relative rounded-3xl overflow-hidden shadow-xl h-[420px] md:h-[480px]">
+                    {/* Background image */}
+                    <img
+                      src={featured.cover_image || "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1600&q=80"}
+                      alt={featured.title}
+                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10" />
+
+                    {/* Content */}
+                    <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-10">
+                      <div className="flex items-center gap-2 mb-4">
+                        <span
+                          className="px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider text-slate-900"
+                          style={{ background: CATEGORY_COLOR[featured.category] || "#f4c025" }}
+                        >
+                          {CATEGORY_LABEL[featured.category] || featured.category}
+                        </span>
+                        <span className="text-white/60 text-xs font-bold uppercase tracking-wider">Destaque</span>
                         {featured.read_time_minutes && (
-                          <span className="text-xs text-muted-foreground flex items-center gap-1">
-                            <Clock className="w-3 h-3" /> {featured.read_time_minutes} min de leitura
+                          <span className="text-white/60 text-xs flex items-center gap-1">
+                            <Clock className="w-3 h-3" /> {featured.read_time_minutes} min
                           </span>
                         )}
                       </div>
-                      <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground group-hover:text-primary transition-colors mb-3">
+
+                      <h2 className="text-2xl md:text-4xl font-extrabold text-white leading-tight mb-3 max-w-2xl">
                         {featured.title}
                       </h2>
-                      <p className="text-muted-foreground line-clamp-3 mb-4">{featured.excerpt}</p>
-                      <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                        <span className="flex items-center gap-1"><User className="w-3 h-3" /> {featured.author_name}</span>
+                      <p className="text-white/70 text-sm md:text-base line-clamp-2 max-w-xl mb-5">
+                        {featured.excerpt}
+                      </p>
+                      <div className="flex items-center gap-2">
+                        <span
+                          className="inline-flex items-center gap-1.5 text-sm font-bold px-4 py-2 rounded-full text-slate-900 group-hover:opacity-90 transition-opacity"
+                          style={{ background: "#f4c025" }}
+                        >
+                          Ler artigo <ArrowRight className="w-4 h-4" />
+                        </span>
                         {featured.published_at && (
-                          <span className="flex items-center gap-1">
-                            <Calendar className="w-3 h-3" />
+                          <span className="text-white/50 text-xs">
                             {new Date(featured.published_at).toLocaleDateString("pt-BR", { day: "numeric", month: "short", year: "numeric" })}
                           </span>
                         )}
@@ -202,7 +224,7 @@ const Blog = () => {
               </motion.div>
             )}
 
-            {/* Other Posts Grid */}
+            {/* Grid */}
             {rest.length > 0 && (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <AnimatePresence mode="popLayout">
@@ -217,6 +239,7 @@ const Blog = () => {
       </section>
 
       <SiteFooter />
+      <BottomNav />
     </div>
   );
 };
@@ -230,41 +253,49 @@ const PostCard = ({ post }: { post: BlogPost }) => (
     transition={{ duration: 0.3 }}
   >
     <Link to={`/blog/${post.slug}`} className="group block h-full">
-      <div className="rounded-xl overflow-hidden shadow-card hover:shadow-card-hover transition-all duration-300 bg-card h-full flex flex-col">
-        <div className="relative h-48 overflow-hidden bg-muted">
-          {post.cover_image ? (
-            <img
-              src={post.cover_image}
-              alt={post.title}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-              loading="lazy"
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-muted to-muted-foreground/5">
-              <BookOpen className="w-12 h-12 text-muted-foreground/20" />
-            </div>
+      <div className="rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 bg-white h-full flex flex-col">
+
+        {/* Image */}
+        <div className="relative h-56 overflow-hidden bg-slate-200 flex-shrink-0">
+          <img
+            src={post.cover_image || "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80"}
+            alt={post.title}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            loading="lazy"
+          />
+          {/* Gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+
+          {/* Category badge */}
+          <span
+            className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider text-slate-900"
+            style={{ background: CATEGORY_COLOR[post.category] || "#f4c025" }}
+          >
+            {CATEGORY_LABEL[post.category] || post.category}
+          </span>
+
+          {/* Read time */}
+          {post.read_time_minutes && (
+            <span className="absolute bottom-3 right-3 flex items-center gap-1 text-white/90 text-xs font-semibold bg-black/40 backdrop-blur-sm px-2 py-1 rounded-full">
+              <Clock className="w-3 h-3" /> {post.read_time_minutes} min
+            </span>
           )}
-          <div className="absolute top-3 left-3">
-            <Badge className={`text-xs border ${CATEGORY_COLORS[post.category] || "bg-muted text-foreground"}`}>
-              {post.category}
-            </Badge>
-          </div>
         </div>
-        <div className="p-4 flex-1 flex flex-col">
-          <h3 className="font-display text-lg font-bold text-foreground group-hover:text-primary transition-colors mb-2 line-clamp-2">
+
+        {/* Body */}
+        <div className="p-5 flex-1 flex flex-col">
+          <h3 className="font-extrabold text-slate-800 text-base leading-snug group-hover:text-[#c9950a] transition-colors mb-2 line-clamp-2">
             {post.title}
           </h3>
-          <p className="text-muted-foreground text-sm line-clamp-2 mb-3 flex-1">{post.excerpt}</p>
-          <div className="flex items-center justify-between text-xs text-muted-foreground">
-            <span className="flex items-center gap-1"><User className="w-3 h-3" /> {post.author_name}</span>
-            <div className="flex items-center gap-3">
-              {post.read_time_minutes && (
-                <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {post.read_time_minutes} min</span>
-              )}
-              {post.published_at && (
-                <span>{new Date(post.published_at).toLocaleDateString("pt-BR", { day: "numeric", month: "short" })}</span>
-              )}
-            </div>
+          <p className="text-slate-500 text-sm line-clamp-2 mb-4 flex-1">{post.excerpt}</p>
+
+          <div className="flex items-center justify-between text-xs text-slate-400 border-t border-slate-100 pt-3">
+            <span className="font-medium text-slate-500">{post.author_name}</span>
+            {post.published_at && (
+              <span>
+                {new Date(post.published_at).toLocaleDateString("pt-BR", { day: "numeric", month: "short" })}
+              </span>
+            )}
           </div>
         </div>
       </div>
