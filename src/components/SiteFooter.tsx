@@ -136,6 +136,10 @@ const SiteFooter = () => {
             <p className="text-xs text-slate-500">
               © {new Date().getFullYear()} VisitFloripa. Todos os direitos reservados.
             </p>
+            <span className="text-slate-700">·</span>
+            <span className="text-xs text-slate-600 font-mono tracking-tight">
+              27°35′S 48°33′W
+            </span>
           </div>
           <button className="text-[10px] bg-slate-800 border border-slate-700 px-3 py-1.5 rounded-full font-bold uppercase tracking-wider text-slate-400 hover:text-white hover:border-slate-500 transition-colors w-fit">
             PT-BR
