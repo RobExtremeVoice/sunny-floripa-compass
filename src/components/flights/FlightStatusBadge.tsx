@@ -2,48 +2,69 @@ import type { Database } from "@/integrations/supabase/types";
 
 type FlightStatus = Database["public"]["Enums"]["flight_status"];
 
-const statusConfig: Record<FlightStatus, { label: string; className: string }> = {
+const statusConfig: Record<FlightStatus, { label: string; bg: string; color: string; dot: string }> = {
   scheduled: {
     label: "Programado",
-    className: "bg-muted text-muted-foreground",
+    bg: "rgba(100,116,139,0.12)",
+    color: "#64748b",
+    dot: "#94a3b8",
   },
   boarding: {
     label: "Embarque",
-    className: "bg-ocean/15 text-ocean-deep",
+    bg: "rgba(0,168,232,0.12)",
+    color: "#00A8E8",
+    dot: "#00A8E8",
   },
   departed: {
     label: "Decolou",
-    className: "bg-tropical-light text-tropical",
+    bg: "rgba(38,198,160,0.12)",
+    color: "#26C6A0",
+    dot: "#26C6A0",
   },
   in_air: {
     label: "Em Voo",
-    className: "bg-ocean-light text-ocean-deep",
+    bg: "rgba(0,168,232,0.12)",
+    color: "#00A8E8",
+    dot: "#00A8E8",
   },
   landed: {
     label: "Pousou",
-    className: "bg-tropical-light text-tropical",
+    bg: "rgba(38,198,160,0.12)",
+    color: "#26C6A0",
+    dot: "#26C6A0",
   },
   arrived: {
     label: "Chegou",
-    className: "bg-tropical-light text-tropical",
+    bg: "rgba(38,198,160,0.15)",
+    color: "#1aad8c",
+    dot: "#26C6A0",
   },
   delayed: {
     label: "Atrasado",
-    className: "bg-sunset/15 text-sunset",
+    bg: "rgba(255,111,97,0.12)",
+    color: "#FF6F61",
+    dot: "#FF6F61",
   },
   cancelled: {
     label: "Cancelado",
-    className: "bg-destructive/15 text-destructive",
+    bg: "rgba(239,68,68,0.12)",
+    color: "#ef4444",
+    dot: "#ef4444",
   },
 };
 
 const FlightStatusBadge = ({ status }: { status: FlightStatus }) => {
-  const config = statusConfig[status];
+  const cfg = statusConfig[status];
   return (
     <span
-      className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold ${config.className}`}
+      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold"
+      style={{ background: cfg.bg, color: cfg.color }}
     >
-      {config.label}
+      <span
+        className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+        style={{ background: cfg.dot }}
+      />
+      {cfg.label}
     </span>
   );
 };
