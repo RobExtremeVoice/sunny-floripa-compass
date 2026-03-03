@@ -9,22 +9,52 @@ const oQueFazerItems = [
   { label: "Entretenimento", href: "/entretenimento", icon: "celebration" },
 ];
 
+const EXPERIENCES = [
+  { label: "Praias de Florianópolis", href: "/praias", icon: "beach_access", category: "Destinos" },
+  { label: "Gastronomia & Restaurantes", href: "/gastronomia", icon: "restaurant", category: "Destinos" },
+  { label: "Entretenimento & Aventura", href: "/entretenimento", icon: "celebration", category: "Destinos" },
+  { label: "Voos para Florianópolis", href: "/flights", icon: "flight", category: "Viagem" },
+  { label: "Hospedagens & Hotéis", href: "/hospedagem", icon: "hotel", category: "Viagem" },
+  { label: "Planejador de Roteiro IA", href: "/planejar", icon: "auto_awesome", category: "Viagem" },
+  { label: "Blog de Viagem", href: "/blog", icon: "article", category: "Inspiração" },
+  { label: "Trilhas & Natureza", href: "/entretenimento", icon: "hiking", category: "Aventura" },
+  { label: "Surf & Esportes Aquáticos", href: "/praias", icon: "surfing", category: "Aventura" },
+  { label: "Passeios de Barco", href: "/entretenimento", icon: "sailing", category: "Aventura" },
+  { label: "Cultura Açoriana", href: "/entretenimento", icon: "museum", category: "Cultura" },
+  { label: "Vida Noturna", href: "/blog?categoria=vida-noturna", icon: "nightlife", category: "Cultura" },
+];
+
 const SiteHeader = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const searchRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
   const { open: openAssistant } = useTravelAssistant();
+
+  const filteredExperiences = searchQuery.trim()
+    ? EXPERIENCES.filter((e) =>
+        e.label.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        e.category.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : EXPERIENCES;
 
   useEffect(() => {
     setMobileOpen(false);
     setDropdownOpen(false);
+    setSearchOpen(false);
+    setSearchQuery("");
   }, [location.pathname]);
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
         setDropdownOpen(false);
+      }
+      if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
+        setSearchOpen(false);
       }
     };
     document.addEventListener("mousedown", handler);
@@ -104,13 +134,57 @@ const SiteHeader = () => {
           {/* Right actions */}
           <div className="flex items-center gap-3">
             {/* Desktop search bar */}
-            <div className="hidden lg:flex items-center bg-primary/10 rounded-full px-4 py-2 border border-primary/20">
-              <span className="material-symbols-outlined text-primary mr-2" style={{ fontSize: "18px" }}>search</span>
-              <input
-                className="bg-transparent border-none focus:ring-0 text-sm w-40 placeholder:text-slate-500 dark:placeholder:text-slate-400 outline-none"
-                placeholder="Buscar experiências..."
-                type="text"
-              />
+            <div className="hidden lg:block relative" ref={searchRef}>
+              <div className="flex items-center bg-primary/10 rounded-full px-4 py-2 border border-primary/20 focus-within:border-primary/50 transition-colors">
+                <span className="material-symbols-outlined text-primary mr-2" style={{ fontSize: "18px" }}>search</span>
+                <input
+                  className="bg-transparent border-none focus:ring-0 text-sm w-44 placeholder:text-slate-500 dark:placeholder:text-slate-400 outline-none"
+                  placeholder="Buscar experiências..."
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onFocus={() => setSearchOpen(true)}
+                />
+              </div>
+
+              <AnimatePresence>
+                {searchOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -6, scale: 0.97 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -6, scale: 0.97 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute right-0 top-full mt-2 w-72 bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-slate-100 dark:border-slate-700 overflow-hidden z-50"
+                  >
+                    {filteredExperiences.length === 0 ? (
+                      <p className="text-sm text-slate-400 text-center py-6">Nenhum resultado</p>
+                    ) : (
+                      (() => {
+                        const categories = [...new Set(filteredExperiences.map((e) => e.category))];
+                        return categories.map((cat) => (
+                          <div key={cat}>
+                            <p className="text-[10px] font-extrabold uppercase tracking-widest text-slate-400 px-4 pt-3 pb-1">{cat}</p>
+                            {filteredExperiences
+                              .filter((e) => e.category === cat)
+                              .map((exp) => (
+                                <a
+                                  key={exp.label}
+                                  href={exp.href}
+                                  className="flex items-center gap-3 px-4 py-2.5 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-primary/10 hover:text-primary transition-colors"
+                                >
+                                  <span className="material-symbols-outlined text-primary" style={{ fontSize: "18px" }}>
+                                    {exp.icon}
+                                  </span>
+                                  {exp.label}
+                                </a>
+                              ))}
+                          </div>
+                        ));
+                      })()
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
             {/* Desktop CTA */}
