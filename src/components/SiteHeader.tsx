@@ -21,7 +21,6 @@ const SiteHeader = () => {
     setDropdownOpen(false);
   }, [location.pathname]);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
@@ -33,14 +32,14 @@ const SiteHeader = () => {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-md border-b border-primary/10">
+    <header className="sticky top-0 z-50 bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-xl border-b border-primary/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
-          {/* Logo + Nav */}
+        <div className="flex items-center justify-between h-16 md:h-20">
+          {/* Logo + Desktop Nav */}
           <div className="flex items-center gap-8">
             <a className="flex items-center gap-2 group shrink-0" href="/">
               <span className="material-symbols-outlined text-primary text-3xl transition-transform group-hover:scale-110">sailing</span>
-              <span className="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100">
+              <span className="text-xl md:text-2xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100">
                 Visit<span className="text-primary">Floripa</span>
               </span>
             </a>
@@ -53,7 +52,6 @@ const SiteHeader = () => {
                 Hospedagens
               </a>
 
-              {/* O que Fazer dropdown */}
               <div className="relative" ref={dropdownRef}>
                 <button
                   onClick={() => setDropdownOpen((v) => !v)}
@@ -67,7 +65,6 @@ const SiteHeader = () => {
                     expand_more
                   </span>
                 </button>
-
                 <AnimatePresence>
                   {dropdownOpen && (
                     <motion.div
@@ -94,7 +91,6 @@ const SiteHeader = () => {
                 </AnimatePresence>
               </div>
 
-              {/* Planeje sua Viagem → opens AI drawer */}
               <button
                 onClick={openAssistant}
                 className="flex items-center gap-1.5 text-sm font-semibold px-3 py-2 rounded-lg hover:text-primary hover:bg-primary/5 transition-colors"
@@ -105,8 +101,9 @@ const SiteHeader = () => {
             </nav>
           </div>
 
-          {/* Actions */}
+          {/* Right actions */}
           <div className="flex items-center gap-3">
+            {/* Desktop search bar */}
             <div className="hidden lg:flex items-center bg-primary/10 rounded-full px-4 py-2 border border-primary/20">
               <span className="material-symbols-outlined text-primary mr-2" style={{ fontSize: "18px" }}>search</span>
               <input
@@ -115,18 +112,30 @@ const SiteHeader = () => {
                 type="text"
               />
             </div>
+
+            {/* Desktop CTA */}
             <a
               href="/planejar"
-              className="bg-primary text-slate-900 px-6 py-2.5 rounded-full font-bold text-sm hover:brightness-105 transition-all shadow-lg shadow-primary/20 shrink-0"
+              className="hidden md:inline-flex bg-primary text-slate-900 px-6 py-2.5 rounded-full font-bold text-sm hover:brightness-105 transition-all shadow-lg shadow-primary/20"
             >
               Reserve Agora
             </a>
+
+            {/* Mobile: search circle button */}
             <button
-              className="md:hidden text-slate-900 dark:text-slate-100"
+              className="md:hidden p-2 rounded-full bg-primary/10 text-slate-900 dark:text-slate-100"
+              aria-label="Buscar"
+            >
+              <span className="material-symbols-outlined">search</span>
+            </button>
+
+            {/* Mobile: hamburger */}
+            <button
+              className="md:hidden p-2 text-slate-900 dark:text-slate-100"
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-label="Menu"
             >
-              <span className="material-symbols-outlined">{mobileOpen ? "close" : "menu"}</span>
+              <span className="material-symbols-outlined text-3xl">{mobileOpen ? "close" : "menu"}</span>
             </button>
           </div>
         </div>

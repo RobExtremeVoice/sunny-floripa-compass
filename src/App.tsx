@@ -7,6 +7,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { AuthProvider } from "@/hooks/useAuth";
 import { TravelAssistantProvider } from "@/contexts/TravelAssistantContext";
 import TravelAssistantDrawer from "@/components/TravelAssistantDrawer";
+import BottomNav from "@/components/BottomNav";
 import Index from "./pages/Index";
 import Flights from "./pages/Flights";
 import Accommodations from "./pages/Accommodations";
@@ -35,6 +36,7 @@ const App = () => (
           <Sonner />
           <BrowserRouter>
             <TravelAssistantDrawer />
+            <BottomNav />
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/flights" element={<Flights />} />
