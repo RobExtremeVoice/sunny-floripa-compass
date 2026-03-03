@@ -45,42 +45,48 @@ const neighborhoods = [
   {
     name: "Jurerê Internacional",
     desc: "Praia sofisticada, vida noturna premiada, hotéis de luxo.",
-    img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&q=80",
+    // Barcos flutuando na baía azul de Florianópolis
+    img: "https://images.unsplash.com/photo-1742614098758-ff24f78a33c7?w=600&q=80",
     tag: "Premium",
     tagColor: "#f4c025",
   },
   {
     name: "Lagoa da Conceição",
     desc: "Charmosa, boêmia, trilhas, kitesurf e ótimos restaurantes.",
-    img: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=400&q=80",
+    // Grande lâmina d'água com montanha ao fundo — Florianópolis
+    img: "https://images.unsplash.com/photo-1673205918089-0db97ee2acd0?w=600&q=80",
     tag: "Alternativo",
     tagColor: "#26C6A0",
   },
   {
     name: "Ingleses",
     desc: "Bairro familiar com praia extensa e opções econômicas.",
-    img: "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=400&q=80",
+    // Praia com cidade ao fundo — Florianópolis
+    img: "https://images.unsplash.com/photo-1667323567051-1a04b9a23609?w=600&q=80",
     tag: "Família",
     tagColor: "#00A8E8",
   },
   {
     name: "Centro",
     desc: "Localização central, próximo ao terminal e comércio.",
-    img: "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=400&q=80",
+    // Ponte Hercílio Luz com a cidade de Florianópolis ao fundo
+    img: "https://images.unsplash.com/photo-1663001899005-a76fd718e2bf?w=600&q=80",
     tag: "Prático",
     tagColor: "#9b59b6",
   },
   {
     name: "Barra da Lagoa",
     desc: "Vila de pescadores, mar aberto e lagoa lado a lado.",
-    img: "https://images.unsplash.com/photo-1494522855154-9297ac14b55f?w=400&q=80",
+    // Canal da Barra da Lagoa com mata nativa — foto de Paulo Beckman, Florianópolis
+    img: "https://images.unsplash.com/photo-1697032105602-3386d7406434?w=600&q=80",
     tag: "Natureza",
     tagColor: "#e67e22",
   },
   {
     name: "Sul da Ilha",
     desc: "Praias selvagens, Pantano do Sul, tranquilidade total.",
-    img: "https://images.unsplash.com/photo-1548625149-720754981edc?w=400&q=80",
+    // Vista de praia selvagem do topo do morro — Sul da Ilha, Florianópolis
+    img: "https://images.unsplash.com/photo-1601826387819-231bf0c7d477?w=600&q=80",
     tag: "Tranquilo",
     tagColor: "#2ecc71",
   },
