@@ -12,7 +12,7 @@ const HeroSection = () => {
         />
         <div className="absolute inset-0 flex flex-col justify-end p-6 pb-12">
           <span className="bg-primary text-slate-900 px-3 py-1 rounded-full text-xs font-bold w-fit mb-4">
-            VERÃO 2024
+            VERÃO 2026
           </span>
           <h2 className="text-white text-5xl font-extrabold leading-[1.1] mb-6 tracking-tighter">
             Viva a Magia de Floripa
