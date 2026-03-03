@@ -1,38 +1,107 @@
-import { useState, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useLocation } from "react-router-dom";
 
+const oQueFazerItems = [
+  { label: "Praias", href: "/praias", icon: "beach_access" },
+  { label: "Gastronomia", href: "/gastronomia", icon: "restaurant" },
+  { label: "Entretenimento", href: "/entretenimento", icon: "celebration" },
+];
+
 const SiteHeader = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
 
   useEffect(() => {
     setMobileOpen(false);
+    setDropdownOpen(false);
   }, [location.pathname]);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-md border-b border-primary/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo + Nav */}
-          <div className="flex items-center gap-10">
-            <a className="flex items-center gap-2 group" href="/">
+          <div className="flex items-center gap-8">
+            <a className="flex items-center gap-2 group shrink-0" href="/">
               <span className="material-symbols-outlined text-primary text-3xl transition-transform group-hover:scale-110">sailing</span>
               <span className="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100">
                 Visit<span className="text-primary">Floripa</span>
               </span>
             </a>
-            <nav className="hidden md:flex space-x-8">
-              <a className="text-sm font-semibold hover:text-primary transition-colors" href="/praias">Destinos</a>
-              <a className="text-sm font-semibold hover:text-primary transition-colors" href="/entretenimento">O que fazer</a>
-              <a className="text-sm font-semibold hover:text-primary transition-colors" href="/planejar">Planeje sua viagem</a>
+
+            <nav className="hidden md:flex items-center gap-1">
+              <a className="text-sm font-semibold px-3 py-2 rounded-lg hover:text-primary hover:bg-primary/5 transition-colors" href="/flights">
+                Voos
+              </a>
+              <a className="text-sm font-semibold px-3 py-2 rounded-lg hover:text-primary hover:bg-primary/5 transition-colors" href="/hospedagem">
+                Hospedagens
+              </a>
+
+              {/* O que Fazer dropdown */}
+              <div className="relative" ref={dropdownRef}>
+                <button
+                  onClick={() => setDropdownOpen((v) => !v)}
+                  className="flex items-center gap-1 text-sm font-semibold px-3 py-2 rounded-lg hover:text-primary hover:bg-primary/5 transition-colors"
+                >
+                  O que Fazer
+                  <span
+                    className="material-symbols-outlined transition-transform duration-200"
+                    style={{ fontSize: "16px", transform: dropdownOpen ? "rotate(180deg)" : "rotate(0deg)" }}
+                  >
+                    expand_more
+                  </span>
+                </button>
+
+                <AnimatePresence>
+                  {dropdownOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -6, scale: 0.97 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -6, scale: 0.97 }}
+                      transition={{ duration: 0.15 }}
+                      className="absolute top-full left-0 mt-2 w-52 bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-700 overflow-hidden"
+                    >
+                      {oQueFazerItems.map((item) => (
+                        <a
+                          key={item.label}
+                          href={item.href}
+                          className="flex items-center gap-3 px-4 py-3 text-sm font-semibold hover:bg-primary/10 hover:text-primary transition-colors"
+                        >
+                          <span className="material-symbols-outlined text-primary" style={{ fontSize: "18px" }}>
+                            {item.icon}
+                          </span>
+                          {item.label}
+                        </a>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              <a className="text-sm font-semibold px-3 py-2 rounded-lg hover:text-primary hover:bg-primary/5 transition-colors" href="/planejar">
+                Planeje sua Viagem
+              </a>
             </nav>
           </div>
 
           {/* Actions */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <div className="hidden lg:flex items-center bg-primary/10 rounded-full px-4 py-2 border border-primary/20">
-              <span className="material-symbols-outlined text-primary mr-2" style={{ fontSize: '18px' }}>search</span>
+              <span className="material-symbols-outlined text-primary mr-2" style={{ fontSize: "18px" }}>search</span>
               <input
                 className="bg-transparent border-none focus:ring-0 text-sm w-40 placeholder:text-slate-500 dark:placeholder:text-slate-400 outline-none"
                 placeholder="Buscar experiências..."
@@ -41,7 +110,7 @@ const SiteHeader = () => {
             </div>
             <a
               href="/planejar"
-              className="bg-primary text-slate-900 px-6 py-2.5 rounded-full font-bold text-sm hover:brightness-105 transition-all shadow-lg shadow-primary/20"
+              className="bg-primary text-slate-900 px-6 py-2.5 rounded-full font-bold text-sm hover:brightness-105 transition-all shadow-lg shadow-primary/20 shrink-0"
             >
               Reserve Agora
             </a>
@@ -67,19 +136,27 @@ const SiteHeader = () => {
             className="md:hidden bg-background border-b border-border overflow-hidden"
           >
             <nav className="flex flex-col p-4 gap-1">
-              {[
-                { label: "Destinos", href: "/praias" },
-                { label: "O que fazer", href: "/entretenimento" },
-                { label: "Planeje sua viagem", href: "/planejar" },
-              ].map((item) => (
+              <a href="/flights" className="px-4 py-3 text-sm font-semibold rounded-lg hover:text-primary hover:bg-primary/10 transition-colors">
+                Voos
+              </a>
+              <a href="/hospedagem" className="px-4 py-3 text-sm font-semibold rounded-lg hover:text-primary hover:bg-primary/10 transition-colors">
+                Hospedagens
+              </a>
+              {/* O que Fazer sub-items */}
+              <div className="px-4 py-2 text-xs font-bold text-slate-400 uppercase tracking-wider mt-1">O que Fazer</div>
+              {oQueFazerItems.map((item) => (
                 <a
                   key={item.label}
                   href={item.href}
-                  className="px-4 py-3 text-sm font-semibold rounded-lg hover:text-primary hover:bg-primary/10 transition-colors"
+                  className="flex items-center gap-2 pl-8 pr-4 py-2.5 text-sm font-semibold rounded-lg hover:text-primary hover:bg-primary/10 transition-colors"
                 >
+                  <span className="material-symbols-outlined text-primary" style={{ fontSize: "16px" }}>{item.icon}</span>
                   {item.label}
                 </a>
               ))}
+              <a href="/planejar" className="px-4 py-3 text-sm font-semibold rounded-lg hover:text-primary hover:bg-primary/10 transition-colors">
+                Planeje sua Viagem
+              </a>
               <a
                 href="/planejar"
                 className="mt-2 bg-primary text-slate-900 px-4 py-3 rounded-lg font-bold text-sm text-center"
