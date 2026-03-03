@@ -1,4 +1,13 @@
+import { useTravelAssistant } from "@/contexts/TravelAssistantContext";
+
+const COMPASS_PROMPT =
+  "Qual a melhor praia de Florianópolis para visitar agora? Leve em conta a hora do dia, a posição do sol e o perfil de viagem. Sugira 3 opções com uma breve descrição de cada.";
+
 const SunnyCompass = () => {
+  const { openWithPrompt } = useTravelAssistant();
+
+  const handleOpenCompass = () => openWithPrompt(COMPASS_PROMPT);
+
   return (
     <>
       {/* ── Mobile: compact yellow card ────────────── */}
@@ -19,7 +28,10 @@ const SunnyCompass = () => {
             <p className="text-sm mb-6 font-medium opacity-80 leading-relaxed">
               Escolha sua vibe e nós indicaremos a melhor praia para o clima de hoje.
             </p>
-            <button className="bg-slate-900 text-white px-8 py-3 rounded-xl font-bold text-xs uppercase tracking-widest">
+            <button
+              onClick={handleOpenCompass}
+              className="bg-slate-900 text-white px-8 py-3 rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-slate-800 transition-colors"
+            >
               Abrir Bússola
             </button>
           </div>
@@ -56,7 +68,10 @@ const SunnyCompass = () => {
                   </li>
                 ))}
               </ul>
-              <button className="bg-primary text-slate-900 px-8 py-4 rounded-xl font-extrabold hover:shadow-xl transition-all shadow-primary/20">
+              <button
+                onClick={handleOpenCompass}
+                className="bg-primary text-slate-900 px-8 py-4 rounded-xl font-extrabold hover:shadow-xl transition-all shadow-primary/20 hover:brightness-105"
+              >
                 Testar a Bússola Interativa
               </button>
             </div>
@@ -91,6 +106,13 @@ const SunnyCompass = () => {
                   </div>
                 </div>
               </div>
+              {/* Click overlay to open compass */}
+              <button
+                onClick={handleOpenCompass}
+                className="absolute inset-0 z-20 rounded-3xl cursor-pointer opacity-0 hover:opacity-100 flex items-center justify-center transition-opacity"
+                style={{ background: "rgba(244,192,37,0.08)" }}
+                aria-label="Abrir bússola interativa"
+              />
               <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-primary/20 rounded-full blur-3xl pointer-events-none" />
               <div className="absolute -top-10 -right-10 w-60 h-60 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
             </div>

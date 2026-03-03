@@ -16,7 +16,7 @@ const quickPrompts = [
 ];
 
 export const TravelAssistantDrawer = () => {
-  const { isOpen, close } = useTravelAssistant();
+  const { isOpen, close, initialPrompt, clearInitialPrompt } = useTravelAssistant();
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -43,6 +43,18 @@ export const TravelAssistantDrawer = () => {
       setIsLoading(false);
     }
   }, [isOpen]);
+
+  // Auto-send initial prompt (e.g. from SunnyCompass button)
+  useEffect(() => {
+    if (isOpen && initialPrompt) {
+      const timer = setTimeout(() => {
+        sendMessage(initialPrompt);
+        clearInitialPrompt();
+      }, 450);
+      return () => clearTimeout(timer);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen, initialPrompt]);
 
   // Lock body scroll when open
   useEffect(() => {
