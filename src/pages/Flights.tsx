@@ -112,6 +112,83 @@ const airportGuide = [
   },
 ];
 
+// Maps IATA airport codes to city/airport names (PT-BR) for search
+const IATA_CITIES: Record<string, string> = {
+  // Brasil
+  GRU: "São Paulo Guarulhos",
+  CGH: "São Paulo Congonhas",
+  VCP: "Campinas Viracopos",
+  GIG: "Rio de Janeiro Galeão",
+  SDU: "Rio de Janeiro Santos Dumont",
+  BSB: "Brasília",
+  CWB: "Curitiba",
+  POA: "Porto Alegre",
+  SSA: "Salvador",
+  REC: "Recife",
+  FOR: "Fortaleza",
+  BEL: "Belém",
+  MAO: "Manaus",
+  MCZ: "Maceió",
+  NAT: "Natal",
+  THE: "Teresina",
+  SLZ: "São Luís",
+  JPA: "João Pessoa",
+  AJU: "Aracaju",
+  VIX: "Vitória",
+  UDI: "Uberlândia",
+  GYN: "Goiânia",
+  CGB: "Cuiabá",
+  CGR: "Campo Grande",
+  PVH: "Porto Velho",
+  RBR: "Rio Branco",
+  STM: "Santarém",
+  IMP: "Imperatriz",
+  FLN: "Florianópolis",
+  JOI: "Joinville",
+  NVT: "Navegantes",
+  XAP: "Chapecó",
+  URI: "Erechim",
+  IGU: "Foz do Iguaçu",
+  LDB: "Londrina",
+  MGF: "Maringá",
+  CNF: "Belo Horizonte Confins",
+  PLU: "Belo Horizonte Pampulha",
+  RIO: "Rio de Janeiro",
+  SAO: "São Paulo",
+  // Internacional
+  EZE: "Buenos Aires Ezeiza",
+  AEP: "Buenos Aires Aeroparque",
+  SCL: "Santiago",
+  LIM: "Lima",
+  BOG: "Bogotá",
+  GRU2: "Lima",
+  MVD: "Montevidéu",
+  ASU: "Assunção",
+  MIA: "Miami",
+  JFK: "Nova York",
+  LAX: "Los Angeles",
+  ORD: "Chicago",
+  LHR: "Londres",
+  CDG: "Paris",
+  MAD: "Madri",
+  LIS: "Lisboa",
+  OPO: "Porto",
+  FCO: "Roma",
+  FRA: "Frankfurt",
+  AMS: "Amsterdã",
+  ZRH: "Zurique",
+  DXB: "Dubai",
+  DOH: "Doha",
+  PVG: "Xangai",
+  NRT: "Tóquio",
+  CUN: "Cancún",
+  PMI: "Palma de Mallorca",
+};
+
+/** Returns all searchable text for a given IATA code */
+const airportText = (code: string) =>
+  `${code} ${IATA_CITIES[code] ?? ""}`.toLowerCase();
+
 const Flights = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState("arrivals");
@@ -161,13 +238,14 @@ const Flights = () => {
   const filteredFlights = flights?.filter((f) => {
     const isArrival = activeTab === "arrivals" ? true : activeTab === "departures" ? false : null;
     const matchesTab = isArrival === null || f.is_arrival === isArrival;
-    const query = searchQuery || heroOrigin;
+    const q = (searchQuery || heroOrigin).toLowerCase().trim();
     const matchesSearch =
-      !query ||
-      f.flight_number.toLowerCase().includes(query.toLowerCase()) ||
-      f.origin.toLowerCase().includes(query.toLowerCase()) ||
-      f.destination.toLowerCase().includes(query.toLowerCase()) ||
-      (airlineMap.get(f.airline_code) ?? "").toLowerCase().includes(query.toLowerCase());
+      !q ||
+      f.flight_number.toLowerCase().includes(q) ||
+      airportText(f.origin).includes(q) ||
+      airportText(f.destination).includes(q) ||
+      (airlineMap.get(f.airline_code) ?? "").toLowerCase().includes(q) ||
+      f.airline_code.toLowerCase().includes(q);
     return matchesTab && matchesSearch;
   });
 
