@@ -215,20 +215,6 @@ const SiteHeader = () => {
         </div>
       </div>
 
-      {/* Mobile — "Planeje sua Viagem" strip */}
-      <div className="md:hidden border-t border-primary/10 bg-gradient-to-r from-primary/95 to-amber-400/90 backdrop-blur-sm">
-        <button
-          onClick={openAssistant}
-          className="w-full flex items-center justify-between px-5 py-2.5 group"
-        >
-          <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-slate-900 text-lg">auto_awesome</span>
-            <span className="text-slate-900 text-sm font-extrabold tracking-tight">Planeje sua Viagem com IA</span>
-          </div>
-          <span className="material-symbols-outlined text-slate-900 text-base group-hover:translate-x-1 transition-transform">arrow_forward</span>
-        </button>
-      </div>
-
       {/* Mobile Menu */}
       <AnimatePresence>
         {mobileOpen && (
