@@ -21,7 +21,7 @@ export default function AdminLayout() {
 
   useEffect(() => {
     if (!loading && !user) {
-      navigate("/auth");
+      navigate("/auth?redirect=/admin");
     }
   }, [user, loading, navigate]);
 
