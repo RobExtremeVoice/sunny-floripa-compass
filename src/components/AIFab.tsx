@@ -7,7 +7,7 @@ const AIFab = () => {
   return (
     <motion.button
       onClick={open}
-      className="md:hidden fixed bottom-24 right-4 z-[55] w-14 h-14 rounded-full shadow-2xl flex items-center justify-center"
+      className="md:hidden fixed top-[68px] right-4 z-[55] w-12 h-12 rounded-full shadow-2xl flex items-center justify-center"
       style={{ background: "linear-gradient(135deg, #f4c025 0%, #f59e0b 100%)" }}
       whileTap={{ scale: 0.92 }}
       initial={{ scale: 0, opacity: 0 }}
