@@ -1,8 +1,4 @@
-import { useTravelAssistant } from "@/contexts/TravelAssistantContext";
-
 const HeroSection = () => {
-  const { open } = useTravelAssistant();
-
   return (
     <>
       {/* ── Mobile Hero ──────────────────────────────── */}
@@ -21,18 +17,6 @@ const HeroSection = () => {
           <h2 className="text-white text-5xl font-extrabold leading-[1.1] mb-6 tracking-tighter">
             Viva a Magia de Floripa
           </h2>
-
-          {/* Bubble flutuante — Planeje sua Viagem */}
-          <div className="flex justify-center mb-4">
-            <button
-              onClick={open}
-              className="bg-primary text-slate-900 px-5 py-2.5 rounded-full font-bold text-sm flex items-center gap-2 shadow-xl shadow-primary/40 relative"
-            >
-              <span className="absolute inset-0 rounded-full animate-ping opacity-20 bg-primary pointer-events-none" />
-              <span className="material-symbols-outlined text-base relative z-10">auto_awesome</span>
-              <span className="relative z-10">Planeje sua Viagem</span>
-            </button>
-          </div>
 
           <a
             href="/praias"
