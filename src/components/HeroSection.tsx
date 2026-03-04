@@ -23,15 +23,16 @@ const HeroSection = () => {
           </h2>
 
           {/* Bubble flutuante — Planeje sua Viagem */}
-          <button
-            onClick={open}
-            className="w-full mb-3 py-4 rounded-xl font-bold text-sm flex items-center justify-center gap-2 backdrop-blur-md border border-white/30 text-white relative overflow-hidden"
-            style={{ background: "rgba(244,192,37,0.18)" }}
-          >
-            <span className="absolute inset-0 rounded-xl animate-pulse bg-primary/10 pointer-events-none" />
-            <span className="material-symbols-outlined text-primary relative z-10">auto_awesome</span>
-            <span className="relative z-10">Planeje sua Viagem com IA</span>
-          </button>
+          <div className="flex justify-center mb-4">
+            <button
+              onClick={open}
+              className="bg-primary text-slate-900 px-5 py-2.5 rounded-full font-bold text-sm flex items-center gap-2 shadow-xl shadow-primary/40 relative"
+            >
+              <span className="absolute inset-0 rounded-full animate-ping opacity-20 bg-primary pointer-events-none" />
+              <span className="material-symbols-outlined text-base relative z-10">auto_awesome</span>
+              <span className="relative z-10">Planeje sua Viagem</span>
+            </button>
+          </div>
 
           <a
             href="/praias"
