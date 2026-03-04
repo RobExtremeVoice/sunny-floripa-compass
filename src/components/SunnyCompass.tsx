@@ -11,7 +11,7 @@ const SunnyCompass = () => {
   return (
     <>
       {/* ── Mobile: compact yellow card ────────────── */}
-      <section className="md:hidden px-6 py-4">
+      <section className="md:hidden px-6 py-8">
         <div className="bg-primary/90 backdrop-blur-sm rounded-2xl p-6 text-slate-900 border-2 border-primary shadow-xl relative overflow-hidden">
           {/* Decorative bg icon */}
           <div className="absolute -right-4 -top-4 opacity-10 pointer-events-none">
