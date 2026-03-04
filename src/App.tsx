@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { AuthProvider } from "@/hooks/useAuth";
 import { TravelAssistantProvider } from "@/contexts/TravelAssistantContext";
@@ -25,8 +25,31 @@ import Auth from "./pages/Auth";
 import TripPlanner from "./pages/TripPlanner";
 import TripDetail from "./pages/TripDetail";
 import NotFound from "./pages/NotFound";
+import AdminLayout from "./pages/admin/AdminLayout";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminBlog from "./pages/admin/AdminBlog";
+import AdminBeaches from "./pages/admin/AdminBeaches";
+import AdminRestaurants from "./pages/admin/AdminRestaurants";
+import AdminEntertainment from "./pages/admin/AdminEntertainment";
+import AdminAccommodations from "./pages/admin/AdminAccommodations";
+import AdminFlights from "./pages/admin/AdminFlights";
+import AdminUsers from "./pages/admin/AdminUsers";
 
 const queryClient = new QueryClient();
+
+// Public shell: shows BottomNav, AIFab and TravelAssistantDrawer only outside /admin
+function PublicShell() {
+  const { pathname } = useLocation();
+  const isAdmin = pathname.startsWith("/admin");
+  if (isAdmin) return null;
+  return (
+    <>
+      <TravelAssistantDrawer />
+      <AIFab />
+      <BottomNav />
+    </>
+  );
+}
 
 const App = () => (
   <HelmetProvider>
@@ -38,9 +61,7 @@ const App = () => (
           <Sonner />
           <BrowserRouter>
             <ScrollToTop />
-            <TravelAssistantDrawer />
-            <AIFab />
-            <BottomNav />
+            <PublicShell />
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/flights" element={<Flights />} />
@@ -56,6 +77,17 @@ const App = () => (
               <Route path="/auth" element={<Auth />} />
               <Route path="/planejar" element={<TripPlanner />} />
               <Route path="/planejar/:id" element={<TripDetail />} />
+              {/* Admin routes — protected by AdminLayout (no public shell) */}
+              <Route path="/admin" element={<AdminLayout />}>
+                <Route index element={<AdminDashboard />} />
+                <Route path="blog" element={<AdminBlog />} />
+                <Route path="praias" element={<AdminBeaches />} />
+                <Route path="restaurantes" element={<AdminRestaurants />} />
+                <Route path="entretenimento" element={<AdminEntertainment />} />
+                <Route path="hospedagem" element={<AdminAccommodations />} />
+                <Route path="voos" element={<AdminFlights />} />
+                <Route path="usuarios" element={<AdminUsers />} />
+              </Route>
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
