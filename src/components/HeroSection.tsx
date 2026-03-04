@@ -1,4 +1,8 @@
+import { useTravelAssistant } from "@/contexts/TravelAssistantContext";
+
 const HeroSection = () => {
+  const { open } = useTravelAssistant();
+
   return (
     <>
       {/* ── Mobile Hero ──────────────────────────────── */}
@@ -17,6 +21,18 @@ const HeroSection = () => {
           <h2 className="text-white text-5xl font-extrabold leading-[1.1] mb-6 tracking-tighter">
             Viva a Magia de Floripa
           </h2>
+
+          {/* Bubble flutuante — Planeje sua Viagem */}
+          <button
+            onClick={open}
+            className="w-full mb-3 py-4 rounded-xl font-bold text-sm flex items-center justify-center gap-2 backdrop-blur-md border border-white/30 text-white relative overflow-hidden"
+            style={{ background: "rgba(244,192,37,0.18)" }}
+          >
+            <span className="absolute inset-0 rounded-xl animate-pulse bg-primary/10 pointer-events-none" />
+            <span className="material-symbols-outlined text-primary relative z-10">auto_awesome</span>
+            <span className="relative z-10">Planeje sua Viagem com IA</span>
+          </button>
+
           <a
             href="/praias"
             className="bg-primary text-slate-900 w-full py-4 rounded-xl font-bold text-lg shadow-lg shadow-primary/20 flex items-center justify-center gap-2"
